@@ -3,7 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:nova_maps/Views/UniversityChoice.dart';
-import '../main.dart';
+import 'WeatherPage.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -11,24 +11,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Add a GlobalKey for the Scaffold to control the drawer
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool? notificationsEnabled = false;
+  double squareOpacity = 0.5;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey, // Assign the scaffoldKey
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Center(child: Text("NOVA Maps")),
         leading: IconButton(
-          icon: Icon(Icons.menu), // Add a menu icon on the left
+          icon: Icon(Icons.menu),
           onPressed: () {
-            _scaffoldKey.currentState!.openDrawer(); // Open the drawer
+            _scaffoldKey.currentState!.openDrawer();
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications), // Add a notification icon on the right
+            icon: Icon(Icons.notifications),
             onPressed: () {
               // Handle the notification action here
             },
@@ -69,40 +70,40 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           Positioned(
-            bottom: 40,
-            child: SearchAnchor(
-                builder: (BuildContext context, SearchController controller) {
-                  return SearchBar(
-                    controller: controller,
-                    padding: const MaterialStatePropertyAll<EdgeInsets>(
-                        EdgeInsets.symmetric(horizontal: 16.0)),
-                    onTap: () {
-                      controller.openView();
-                    },
-                    onChanged: (_) {
-                      controller.openView();
-                    },
-                    leading: const Icon(Icons.search),
-                    trailing: <Widget>[],
-                  );
-                }, suggestionsBuilder:
-                (BuildContext context, SearchController controller) {
-              return List<ListTile>.generate(5, (int index) {
-                final String item = 'item $index';
-                return ListTile(
-                  title: Text(item),
-                  onTap: () {
-                    setState(() {
-                      controller.closeView(item);
-                    });
-                  },
+            top: 30,
+            left: 30,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => WeatherPage()),
                 );
-              });
-            }),
-          )
+                setState(() {
+                  squareOpacity = 0.8;
+                });
+              },
+              onTapUp: (_) {
+                setState(() {
+                  squareOpacity = 0.5;
+                });
+              },
+              child: Container(
+                width: 120,
+                height: 120,
+                color: Colors.blue.withOpacity(squareOpacity),
+                child: Center(
+                  child: Text(
+                    'Weather',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
-      // Add a Drawer for the main options
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -120,44 +121,54 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             ListTile(
-              title: Text('Option 1'),
-              onTap: () {
-                // Handle option 1
-              },
-            ),
-            ListTile(
-              title: Text('Option 2'),
-              onTap: () {
-                // Handle option 2
-              },
-            ),
-            ListTile(
-              title: Text('Option 1'),
-              onTap: () {
-                // Handle option 1
-              },
-            ),
-            ListTile(
-              title: Text('Option 2'),
-              onTap: () {
-                // Handle option 2
-              },
-            ),
-            ListTile(
-              title: Text('Option 1'),
-              onTap: () {
-                // Handle option 1
-              },
-            ),
-            ListTile(
-              title: Text('Choose an university'),
+              title: Text('Weather'),
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => UniversityChoice()),
-                );              },
+                  MaterialPageRoute(builder: (context) => WeatherPage()),
+                );
+              },
             ),
-            // Add more options as needed
+            ListTile(
+              title: Text('Menu'),
+              onTap: () {
+                // Handle option 2
+              },
+            ),
+            ListTile(
+              title: Text('Events'),
+              onTap: () {
+                // Handle option 1
+              },
+            ),
+            ListTile(
+              title: Text('Information'),
+              onTap: () {
+                // Handle option 2
+              },
+            ),
+            ListTile(
+              title: Text('Notifications'),
+              trailing: Radio(
+                value: notificationsEnabled,
+                groupValue: notificationsEnabled,
+                onChanged: (value) {
+                  setState(() {
+                    notificationsEnabled = value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: Text('Choose a university'),
+              onTap: () {
+                // Navigate to the university choice screen
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => UniversityChoice()),
+                );
+              },
+            ),
           ],
         ),
       ),

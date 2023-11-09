@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35927552-c856-4c8c-9986-812495f3cf6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/nova_maps/lib/Views/UniversityChoice.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/lib/Views/CollageChoice.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nova_maps/lib/Views/HomePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/lib/Views/HomePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/lib/widgets/FloatingSearchBar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/lib/widgets/FloatingSearchBar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/linux/flutter/generated_plugins.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/windows/flutter/generated_plugins.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/windows/runner/flutter_window.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/windows/runner/flutter_window.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
