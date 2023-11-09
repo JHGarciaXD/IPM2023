@@ -10,48 +10,54 @@ class UniversityChoice extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0), // Added padding around the column
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              UniversityButton(
-                text: "NOVA FCT",
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyHomePage()),
-                  );
-                },
-              ),
-              SizedBox(height: 16), // Added spacing between buttons
-              UniversityButton(
-                text: 'NOVA Medical School',
-                onPressed: () {
-                  _showInDevelopmentPopup(context);
-                },
-              ),
-              SizedBox(height: 16), // Added spacing between buttons
-              UniversityButton(
-                text: 'NOVA FCSH',
-                onPressed: () {
-                  _showInDevelopmentPopup(context);
-                },
-              ),
+        child: Stack(
+          children: [
+            
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  UniversityButton(
+                    text: "NOVA FCT",
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyHomePage()),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 16), // Added spacing between buttons
+                  UniversityButton(
+                    text: 'NOVA Medical School',
+                    onPressed: () {
+                      _showInDevelopmentPopup(context);
+                    },
+                  ),
+                  SizedBox(height: 16), // Added spacing between buttons
+                  UniversityButton(
+                    text: 'NOVA FCSH',
+                    onPressed: () {
+                      _showInDevelopmentPopup(context);
+                    },
+                  ),
 
-              SizedBox(height: 16), // Added spacing between buttons
-              UniversityButton(
-                text: 'NOVA IMS',
-                onPressed: () {
-                  _showInDevelopmentPopup(context);
-                },
+                  SizedBox(height: 16), // Added spacing between buttons
+                  UniversityButton(
+                    text: 'NOVA IMS',
+                    onPressed: () {
+                      _showInDevelopmentPopup(context);
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
 void _showInDevelopmentPopup(BuildContext context) {
   showDialog(
     context: context,

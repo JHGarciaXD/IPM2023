@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:nova_maps/Views/UniversityChoice.dart';
+import 'EventsPage.dart';
 import 'WeatherPage.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -38,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Stack(
         children: [
+          
           FlutterMap(
             options: MapOptions(
               initialCenter: LatLng(38.66242134778433, -9.205404686249338),
@@ -74,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
             left: 30,
             child: GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => WeatherPage()),
                 );
@@ -123,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Weather'),
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => WeatherPage()),
                 );
@@ -132,12 +135,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Menu'),
               onTap: () {
+               
                 // Handle option 2
               },
             ),
             ListTile(
               title: Text('Events'),
               onTap: () {
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => EventsPage()));
                 // Handle option 1
               },
             ),
