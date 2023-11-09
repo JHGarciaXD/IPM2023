@@ -41,6 +41,8 @@ dependencies:
   material_floating_search_bar: ^0.3.7
   sliding_up_panel: ^2.0.0+1
   flutter_dotenv: ^5.1.0
+  geolocator: ^10.1.0
+  flutter_map_location_marker: any
 
 dev_dependencies:
   flutter_test:
