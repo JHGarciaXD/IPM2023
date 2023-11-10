@@ -7,7 +7,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:nova_maps/Views/UniversityChoice.dart';
 import 'package:nova_maps/widgets/MapMarkers.dart';
 import 'EventsPage.dart';
+import 'MenuPage.dart';
 import 'WeatherPage.dart';
+import 'WeatherBox.dart';
+
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -106,12 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 120,
                 color: Colors.blue.withOpacity(squareOpacity),
                 child: Center(
-                  child: Text(
-                    'Weather',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: const WeatherBox(location: 'Costa Da Caparica'),
                 ),
               ),
             ),
@@ -146,8 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Menu'),
               onTap: () {
-               
-                // Handle option 2
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPage()));
+                // Handle option 1
               },
             ),
             ListTile(
