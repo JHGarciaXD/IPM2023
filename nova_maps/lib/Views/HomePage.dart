@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:nova_maps/Views/UniversityChoice.dart';
+import 'package:nova_maps/widgets/MapMarkers.dart';
 import 'EventsPage.dart';
 import 'WeatherPage.dart';
 
@@ -41,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Stack(
         children: [
-          
           FlutterMap(
             options: MapOptions(
               initialCenter: LatLng(38.66168, -9.20592),
@@ -59,6 +59,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     'OpenStreetMap contributors',
                     onTap: () => launchUrl(
                         Uri.parse('https://openstreetmap.org/copyright')),
+                  ),
+                ],
+              ),
+              MarkerLayer(
+                markers: [
+                  buildingButton(
+                      const LatLng(38.66115, -9.20345),
+                      "Building 2",
+                      context
+                  ),
+                  restaurantButton(
+                      const LatLng(38.66175, -9.20465),
+                      "Cafeteria",
+                      context
+                  ),
+                  buildingButton(
+                      const LatLng(38.66085, -9.20575),
+                      "Building 7",
+                      context
                   ),
                 ],
               ),
