@@ -10,7 +10,9 @@ import 'EventsPage.dart';
 import 'MenuPage.dart';
 import 'WeatherPage.dart';
 import 'WeatherBox.dart';
-
+import 'OrsAPI.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -21,6 +23,29 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool? notificationsEnabled = false;
   double squareOpacity = 0.5;
+
+  // Navigation System
+
+  List listOfPoints = [];
+
+  // Conversion of listOfPoints into LatLng(Latitude, Longitude) list of points
+  List<LatLng> points = [];
+
+  // Method to consume the OpenRouteService API
+  getCoordinates() async {
+    // Requesting for openrouteservice api
+    var response =
+        await http.get(getRouteUrl("-9.20592,38.66168", '-9.20575,38.66085'));
+    setState(() {
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        listOfPoints = data['features'][0]['geometry']['coordinates'];
+        points = listOfPoints
+            .map((p) => LatLng(p[1].toDouble(), p[0].toDouble()))
+            .toList();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,20 +93,17 @@ class _MyHomePageState extends State<MyHomePage> {
               MarkerLayer(
                 markers: [
                   buildingButton(
-                      const LatLng(38.66115, -9.20345),
-                      "Building 2",
-                      context
-                  ),
+                      const LatLng(38.66115, -9.20345), "Building 2", context),
                   restaurantButton(
-                      const LatLng(38.66175, -9.20465),
-                      "Cafeteria",
-                      context
-                  ),
+                      const LatLng(38.66175, -9.20465), "Cafeteria", context),
                   buildingButton(
-                      const LatLng(38.66085, -9.20575),
-                      "Building 7",
-                      context
-                  ),
+                      const LatLng(38.66085, -9.20575), "Building 7", context),
+                ],
+              ),
+              PolylineLayer(
+                polylineCulling: false,
+                polylines: [
+                  Polyline(points: points, color: Colors.blue, strokeWidth: 5),
                 ],
               ),
             ],
@@ -144,14 +166,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Menu'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MenuPage()));
                 // Handle option 1
               },
             ),
             ListTile(
               title: Text('Events'),
               onTap: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => EventsPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EventsPage()));
                 // Handle option 1
               },
             ),
@@ -184,6 +208,14 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
           ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blueAccent,
+        onPressed: () => getCoordinates(),
+        child: const Icon(
+          Icons.route,
+          color: Colors.white,
         ),
       ),
     );
