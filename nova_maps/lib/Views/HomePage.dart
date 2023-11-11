@@ -10,6 +10,8 @@ import 'EventsPage.dart';
 import 'MenuPage.dart';
 import 'WeatherPage.dart';
 import 'WeatherBox.dart';
+import 'NotificationsList.dart';
+
 import 'OrsAPI.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -25,7 +27,12 @@ class _MyHomePageState extends State<MyHomePage> {
   double squareOpacity = 0.5;
 
   // Navigation System
-
+  List<String> yourNotificationList = [
+    'Notification 1',
+    'Notification 2',
+    'Notification 3',
+    // Add more notifications as needed
+  ];
   List listOfPoints = [];
 
   // Conversion of listOfPoints into LatLng(Latitude, Longitude) list of points
@@ -63,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: Icon(Icons.notifications),
             onPressed: () {
-              // Handle the notification action here
+              _showNotificationsPanel();
             },
           ),
         ],
@@ -220,4 +227,35 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  void _showNotificationsPanel() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: _buildSlidingPanel(),
+          ),
+        );
+      },
+    );
+  }
+
+
+
+  Widget _buildSlidingPanel() {
+    return NotificationsList(notifications: yourNotificationList);
+  }
+
+
 }
