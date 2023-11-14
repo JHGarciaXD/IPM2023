@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -16,14 +17,13 @@ import 'OrsAPI.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 List listOfPoints = [];
 List<LatLng> points = [];
 
 class MyHomePage extends StatefulWidget {
-
   Future<void> getCoordinates(String destination) async {
-    var response = await http.get(getRouteUrl("-9.20592,38.66168", destination));
+    var response =
+        await http.get(getRouteUrl("-9.20592,38.66168", destination));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       listOfPoints = data['features'][0]['geometry']['coordinates'];
@@ -41,9 +41,29 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool? notificationsEnabled = false;
   double squareOpacity = 0.5;
+  FocusNode searchFocusNode = FocusNode();
+  OverlayEntry? overlayEntry;
 
   late LatLng markerCoordinates;
   bool showContainer = false;
+
+  @override
+  void initState() {
+    super.initState();
+    searchFocusNode.addListener(() {
+      if (searchFocusNode.hasFocus) {
+        showOverlay(context);
+      } else {
+        removeOverlay();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    searchFocusNode.dispose();
+    super.dispose();
+  }
 
   // Navigation System
   List<String> yourNotificationList = [
@@ -62,7 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void getCoordinates(String destination) async {
-    var response = await http.get(getRouteUrl("-9.20592,38.66168", destination));
+    var response =
+        await http.get(getRouteUrl("-9.20592,38.66168", destination));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       listOfPoints = data['features'][0]['geometry']['coordinates'];
@@ -78,6 +99,50 @@ class _MyHomePageState extends State<MyHomePage> {
       showContainer = true;
       markerCoordinates = point;
     });
+  }
+
+  void showOverlay(BuildContext context) {
+    OverlayState? overlayState = Overlay.of(context);
+    double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: keyboardHeight > 0
+            ? 60
+            : MediaQuery.of(context).size.height -
+                320, // Adjust based on your UI
+        left: 40,
+        right: 40,
+        child: Material(
+          elevation: 4.0,
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              ListTile(
+                  title: Text('Option 1'),
+                  onTap: () => selectOption('Option 1')),
+              ListTile(
+                  title: Text('Option 2'),
+                  onTap: () => selectOption('Option 2')),
+              // Add more options here
+            ],
+          ),
+        ),
+      ),
+    );
+    overlayState?.insert(overlayEntry!);
+  }
+
+  void removeOverlay() {
+    overlayEntry?.remove();
+    overlayEntry = null;
+  }
+
+  void selectOption(String option) {
+    // Handle the selection
+    removeOverlay();
+    // You can also set the selected option to the search bar if needed
+    // searchController.text = option;
   }
 
   @override
@@ -103,7 +168,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Stack(
         children: [
-
           FlutterMap(
             options: MapOptions(
               initialCenter: LatLng(38.66168, -9.20592),
@@ -130,92 +194,107 @@ class _MyHomePageState extends State<MyHomePage> {
                       point: LatLng(38.66115, -9.20345),
                       width: 100,
                       height: 100,
-                      child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            IconButton(
-                              iconSize: 60,
-                              icon: const Icon(Icons.location_pin),
-                              color: Colors.blue.shade400,
-                              onPressed: () {showRectanglePopup(context, LatLng(38.66115, -9.20345));},
-                            ),
-                            IconButton(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              iconSize: 20,
-                              icon: const Icon(Icons.circle),
-                              color: Colors.blue.shade400,
-                              onPressed: () {showRectanglePopup(context, LatLng(38.66115, -9.20345));},
-                            ),
-                            IconButton(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
-                              iconSize: 22,
-                              icon: Icon(Icons.business),
-                              color: Colors.black,
-                              onPressed: () {showRectanglePopup(context, LatLng(38.66115, -9.20345));},
-                            ),
-                          ]
-                      )
-                  ),
+                      child: Stack(alignment: Alignment.center, children: [
+                        IconButton(
+                          iconSize: 60,
+                          icon: const Icon(Icons.location_pin),
+                          color: Colors.blue.shade400,
+                          onPressed: () {
+                            showRectanglePopup(
+                                context, LatLng(38.66115, -9.20345));
+                          },
+                        ),
+                        IconButton(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          iconSize: 20,
+                          icon: const Icon(Icons.circle),
+                          color: Colors.blue.shade400,
+                          onPressed: () {
+                            showRectanglePopup(
+                                context, LatLng(38.66115, -9.20345));
+                          },
+                        ),
+                        IconButton(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
+                          iconSize: 22,
+                          icon: Icon(Icons.business),
+                          color: Colors.black,
+                          onPressed: () {
+                            showRectanglePopup(
+                                context, LatLng(38.66115, -9.20345));
+                          },
+                        ),
+                      ])),
                   Marker(
                       point: LatLng(38.66175, -9.20465),
                       width: 100,
                       height: 100,
-                      child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            IconButton(
-                              iconSize: 60,
-                              icon: const Icon(Icons.location_pin),
-                              color: Colors.orange.shade400,
-                              onPressed: () {showRectanglePopup(context, LatLng(38.66175, -9.20465));},
-                            ),
-                            IconButton(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              iconSize: 20,
-                              icon: const Icon(Icons.circle),
-                              color: Colors.orange.shade400,
-                              onPressed: () {showRectanglePopup(context, LatLng(38.66175, -9.20465));},
-                            ),
-                            IconButton(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
-                              iconSize: 22,
-                              icon: Icon(Icons.restaurant),
-                              color: Colors.black,
-                              onPressed: () {showRectanglePopup(context, LatLng(38.66175, -9.20465));},
-                            ),
-                          ]
-                      )
-                  ),
+                      child: Stack(alignment: Alignment.center, children: [
+                        IconButton(
+                          iconSize: 60,
+                          icon: const Icon(Icons.location_pin),
+                          color: Colors.orange.shade400,
+                          onPressed: () {
+                            showRectanglePopup(
+                                context, LatLng(38.66175, -9.20465));
+                          },
+                        ),
+                        IconButton(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          iconSize: 20,
+                          icon: const Icon(Icons.circle),
+                          color: Colors.orange.shade400,
+                          onPressed: () {
+                            showRectanglePopup(
+                                context, LatLng(38.66175, -9.20465));
+                          },
+                        ),
+                        IconButton(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
+                          iconSize: 22,
+                          icon: Icon(Icons.restaurant),
+                          color: Colors.black,
+                          onPressed: () {
+                            showRectanglePopup(
+                                context, LatLng(38.66175, -9.20465));
+                          },
+                        ),
+                      ])),
                   Marker(
                       point: LatLng(38.66085, -9.20575),
                       width: 100,
                       height: 100,
-                      child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            IconButton(
-                              iconSize: 60,
-                              icon: const Icon(Icons.location_pin),
-                              color: Colors.blue.shade400,
-                              onPressed: () {showRectanglePopup(context, LatLng(38.66085, -9.20575));},
-                            ),
-                            IconButton(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              iconSize: 20,
-                              icon: const Icon(Icons.circle),
-                              color: Colors.blue.shade400,
-                              onPressed: () {showRectanglePopup(context, LatLng(38.66085, -9.20575));},
-                            ),
-                            IconButton(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
-                              iconSize: 22,
-                              icon: Icon(Icons.business),
-                              color: Colors.black,
-                              onPressed: () {showRectanglePopup(context, LatLng(38.66085, -9.20575));},
-                            ),
-                          ]
-                      )
-                  ),
+                      child: Stack(alignment: Alignment.center, children: [
+                        IconButton(
+                          iconSize: 60,
+                          icon: const Icon(Icons.location_pin),
+                          color: Colors.blue.shade400,
+                          onPressed: () {
+                            showRectanglePopup(
+                                context, LatLng(38.66085, -9.20575));
+                          },
+                        ),
+                        IconButton(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          iconSize: 20,
+                          icon: const Icon(Icons.circle),
+                          color: Colors.blue.shade400,
+                          onPressed: () {
+                            showRectanglePopup(
+                                context, LatLng(38.66085, -9.20575));
+                          },
+                        ),
+                        IconButton(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
+                          iconSize: 22,
+                          icon: Icon(Icons.business),
+                          color: Colors.black,
+                          onPressed: () {
+                            showRectanglePopup(
+                                context, LatLng(38.66085, -9.20575));
+                          },
+                        ),
+                      ])),
                 ],
               ),
               PolylineLayer(
@@ -226,6 +305,39 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
+          Positioned(
+            bottom: 40,
+            right: 15,
+            left: 15,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Row(
+                children: <Widget>[
+                  IconButton(
+                    splashColor: Colors.grey,
+                    icon: Icon(Icons.filter_alt),
+                    onPressed: () {
+                      _showFilterOptions(context);
+                    },
+                  ),
+                  Expanded(
+                    child: TextField(
+                      cursorColor: const Color.fromARGB(255, 255, 255, 255),
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.go,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                          hintText: "Search..."),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           if (showContainer && markerCoordinates != null)
             Center(
               child: GestureDetector(
@@ -233,51 +345,60 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 120,
                   height: 120,
                   color: Colors.grey.withOpacity(1.0),
-                  child:
-                    Stack(
+                  child: Stack(children: [
+                    IconButton(
+                      iconSize: 25,
+                      icon: const Icon(Icons.close),
+                      alignment: Alignment.topLeft,
+                      color: Colors.black,
+                      onPressed: () {
+                        setState(() {
+                          showContainer = false;
+                        });
+                      },
+                    ),
+                    Center(
+                      child: Stack(
                         children: [
                           IconButton(
-                            iconSize: 25,
-                            icon: const Icon(Icons.close),
-                            alignment: Alignment.topLeft,
-                            color: Colors.black,
+                            iconSize: 45,
+                            icon: const Icon(Icons.circle),
+                            color: Colors.blue,
                             onPressed: () {
-                              setState(() {showContainer = false;});
+                              getCoordinates(
+                                  markerCoordinates.longitude.toString() +
+                                      "," +
+                                      markerCoordinates.latitude.toString());
+                              setState(() {
+                                showContainer = false;
+                              });
+                              // Action upon circle icon press
                             },
                           ),
-                          Center(
-                            child:
-                          Stack(
-                            children: [
-                              IconButton(
-                                iconSize: 45,
-                                icon: const Icon(Icons.circle),
-                                color: Colors.blue,
-                                onPressed: () {
-                                  getCoordinates(markerCoordinates.longitude.toString()+","+markerCoordinates.latitude.toString());
-                                  setState(() {showContainer = false;});
-                                  // Action upon circle icon press
-                                },
-                              ),
-                              Positioned(
-                                top: 7,
-                                left: 7, // Adjust this value to align the second IconButton as needed
-                                child: IconButton(
-                                  iconSize: 30,
-                                  color: Colors.grey.shade100,
-                                  icon: const Icon(Icons.directions),
-                                  onPressed: () {
-                                    getCoordinates(markerCoordinates.longitude.toString()+","+markerCoordinates.latitude.toString());
-                                    setState(() {showContainer = false;});
-                                    // Action upon directions icon press
-                                  },
-                                ),
-                              ),
-                            ],
+                          Positioned(
+                            top: 7,
+                            left:
+                                7, // Adjust this value to align the second IconButton as needed
+                            child: IconButton(
+                              iconSize: 30,
+                              color: Colors.grey.shade100,
+                              icon: const Icon(Icons.directions),
+                              onPressed: () {
+                                getCoordinates(
+                                    markerCoordinates.longitude.toString() +
+                                        "," +
+                                        markerCoordinates.latitude.toString());
+                                setState(() {
+                                  showContainer = false;
+                                });
+                                // Action upon directions icon press
+                              },
+                            ),
                           ),
-                          ),
-                    ]
-                ),
+                        ],
+                      ),
+                    ),
+                  ]),
                 ),
               ),
             ),
@@ -302,7 +423,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 width: 120,
                 height: 120,
-                color: Colors.blue.withOpacity(squareOpacity),
+                color: const Color.fromARGB(255, 74, 74, 75)
+                    .withOpacity(squareOpacity),
                 child: Center(
                   child: const WeatherBox(location: 'Costa Da Caparica'),
                 ),
@@ -316,9 +438,7 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
+              decoration: BoxDecoration(),
               child: Text(
                 'Main Options',
                 style: TextStyle(
@@ -383,16 +503,16 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blueAccent,
-        onPressed: () {
-          test();
-          },
-        child: const Icon(
-          Icons.route,
-          color: Colors.white,
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.blueAccent,
+      //   onPressed: () {
+      //     test();
+      //   },
+      //   child: const Icon(
+      //     Icons.route,
+      //     color: Colors.white,
+      //   ),
+      // ),
     );
   }
 
@@ -419,11 +539,37 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
+  void _showFilterOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                  leading: Icon(Icons.filter_1),
+                  title: Text('Filter Option 1'),
+                  onTap: () => {
+                        // Handle Filter Option 1
+                        Navigator.of(context).pop(),
+                      }),
+              ListTile(
+                leading: Icon(Icons.filter_2),
+                title: Text('Filter Option 2'),
+                onTap: () => {
+                  // Handle Filter Option 2
+                  Navigator.of(context).pop(),
+                },
+              ),
+              // Add more options as needed
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   Widget _buildSlidingPanel() {
     return NotificationsList(notifications: yourNotificationList);
   }
-
-
 }

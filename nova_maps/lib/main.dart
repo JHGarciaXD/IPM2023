@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       title: 'OpenStreetMap',
       theme: darkTheme,
       darkTheme: darkTheme,
-      themeMode:  _themeManager.themeMode,
+      themeMode:  _themeManager.themeMode,  
       home: isFirstTime ? UniversityChoice() : MyHomePage(),
     );
   }

@@ -47,6 +47,7 @@ class _WeatherBoxState extends State<WeatherBox> {
   @override
   Widget build(BuildContext context) {
     return Align(
+      
       alignment: Alignment.center,
       child: Container(
         child: Center(
