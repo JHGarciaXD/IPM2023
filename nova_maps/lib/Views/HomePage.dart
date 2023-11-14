@@ -145,6 +145,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // searchController.text = option;
   }
 
+  void _handleNotificationSelection(String choice) {
+    // Handle your notification selection here
+    // This is where you define what happens when a notification is selected
+    print('Selected: $choice');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,10 +164,16 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         ),
         actions: [
-          IconButton(
+          PopupMenuButton<String>(
             icon: Icon(Icons.notifications),
-            onPressed: () {
-              _showNotificationsPanel();
+            onSelected: _handleNotificationSelection,
+            itemBuilder: (BuildContext context) {
+              return yourNotificationList.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
             },
           ),
         ],
