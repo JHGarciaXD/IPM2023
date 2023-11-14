@@ -37,6 +37,18 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+class NotificationDetails {
+  final String title;
+  final String explanation;
+  final String date;
+
+  NotificationDetails({
+    required this.title,
+    required this.explanation,
+    required this.date,
+  });
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool? notificationsEnabled = true;
@@ -65,14 +77,27 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  // Navigation System
-  List<String> yourNotificationList = [
-    'Notification 1',
-    'Notification 2',
-    'Notification 3',
-    // Add more notifications as needed
-  ];
 
+
+  // Navigation System
+  Map<String, NotificationDetails> notificationDetails = {
+    'Notification 1': NotificationDetails(
+      title: 'Atenção Obras',
+      explanation: 'Edificio 7 com obras no corredor xpto',
+      date: '2023-11-14',
+    ),
+    'Notification 2': NotificationDetails(
+      title: 'Parque 7 fechado',
+      explanation: 'Até domingo, vão ocorrer limpezas no parque.',
+      date: '2023-11-15',
+    ),
+    'Notification 3': NotificationDetails(
+      title: 'Cantina fechada',
+      explanation: 'Cantina só abre a partir de dezembro',
+      date: '2023-11-16',
+    ),
+    // Add more details as needed
+  };
   void test() {
     setState(() {
       points = listOfPoints
@@ -162,16 +187,29 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.notifications),
             onSelected: _handleNotificationSelection,
             itemBuilder: (BuildContext context) {
-              return yourNotificationList.map((String choice) {
+              return notificationDetails.keys.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
-                  child: Text(choice),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(choice),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          // Handle delete action here
+                          _deleteNotification(choice);
+                        },
+                      ),
+                    ],
+                  ),
                 );
               }).toList();
             },
           ),
         ],
       ),
+
 
       body: Stack(
         children: [
@@ -484,12 +522,6 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: Text('Information'),
-              onTap: () {
-                // Handle option 2
-              },
-            ),
-            ListTile(
               title: Text('Notifications'),
               trailing: Checkbox(
                 value: notificationsEnabled,
@@ -580,14 +612,28 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
   void _handleNotificationSelection(String choice) {
-    // Handle your notification selection here
-    // This is where you define what happens when a notification is selected
+    NotificationDetails details =
+        notificationDetails[choice] ??
+            NotificationDetails(
+              title: 'Unknown Title',
+              explanation: 'No explanation available',
+              date: 'Unknown Date',
+            );
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(choice),
-          content: Text('Explanation goes here...'),
+          title: Text(details.title),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(details.explanation),
+              SizedBox(height: 10),
+              Text('Date: ${details.date}'),
+            ],
+          ),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),
@@ -604,16 +650,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height * 0.7, // Adjust the height as needed
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 child: ListView.builder(
-                  itemCount: yourNotificationList.length,
+                  itemCount: notificationDetails.length,
                   itemBuilder: (BuildContext context, int index) {
+                    final notificationKey = notificationDetails.keys.toList()[index];
+                    final NotificationDetails details = notificationDetails[notificationKey]!;
+
                     return Dismissible(
-                      key: Key(yourNotificationList[index]),
+                      key: Key(notificationKey),
                       background: Container(
                         color: Colors.red,
                         child: Align(
@@ -627,16 +675,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       onDismissed: (direction) {
                         // Handle notification deletion
                         setState(() {
-                          yourNotificationList.removeAt(index);
+                          notificationDetails.remove(notificationKey);
                         });
                       },
                       child: Container(
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: ListTile(
-                          title: Text(yourNotificationList[index]),
+                          title: Text(details.title),
                           onTap: () {
-                            _handleNotificationSelection(yourNotificationList[index]);
+                            _handleNotificationSelection(notificationKey);
                           },
                         ),
                       ),
@@ -649,6 +697,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
     );
+  }
+  void _deleteNotification(String notificationKey) {
+    setState(() {
+      notificationDetails.remove(notificationKey);
+    });
   }
 
 }

@@ -7,8 +7,6 @@
     <list default="true" id="35927552-c856-4c8c-9986-812495f3cf6e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nova_maps/lib/Views/HomePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/lib/Views/HomePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nova_maps/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/pubspec.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
