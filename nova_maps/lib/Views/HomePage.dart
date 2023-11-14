@@ -39,7 +39,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool? notificationsEnabled = false;
+  bool? notificationsEnabled = true;
   double squareOpacity = 0.5;
   FocusNode searchFocusNode = FocusNode();
   OverlayEntry? overlayEntry;
@@ -145,12 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // searchController.text = option;
   }
 
-  void _handleNotificationSelection(String choice) {
-    // Handle your notification selection here
-    // This is where you define what happens when a notification is selected
-    print('Selected: $choice');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,6 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+
       body: Stack(
         children: [
           FlutterMap(
@@ -496,16 +491,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListTile(
               title: Text('Notifications'),
-              trailing: Radio(
+              trailing: Checkbox(
                 value: notificationsEnabled,
-                groupValue: notificationsEnabled,
                 onChanged: (value) {
                   setState(() {
-                    notificationsEnabled = value;
+                    notificationsEnabled = value!;
                   });
                 },
               ),
             ),
+
             ListTile(
               title: Text('Choose a university'),
               onTap: () {
@@ -584,8 +579,76 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
-
-  Widget _buildSlidingPanel() {
-    return NotificationsList(notifications: yourNotificationList);
+  void _handleNotificationSelection(String choice) {
+    // Handle your notification selection here
+    // This is where you define what happens when a notification is selected
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(choice),
+          content: Text('Explanation goes here...'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+  Widget _buildSlidingPanel() {
+    return Column(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * 0.7, // Adjust the height as needed
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: yourNotificationList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Dismissible(
+                      key: Key(yourNotificationList[index]),
+                      background: Container(
+                        color: Colors.red,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 16.0),
+                            child: Icon(Icons.delete, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      onDismissed: (direction) {
+                        // Handle notification deletion
+                        setState(() {
+                          yourNotificationList.removeAt(index);
+                        });
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: ListTile(
+                          title: Text(yourNotificationList[index]),
+                          onTap: () {
+                            _handleNotificationSelection(yourNotificationList[index]);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
 }
