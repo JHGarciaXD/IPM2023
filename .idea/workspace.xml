@@ -7,6 +7,9 @@
     <list default="true" id="35927552-c856-4c8c-9986-812495f3cf6e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nova_maps/lib/Views/HomePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/lib/Views/HomePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nova_maps/lib/Views/WeatherBox.dart" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/lib/Views/WeatherBox.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nova_maps/lib/Views/WeatherPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/lib/Views/WeatherPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nova_maps/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/nova_maps/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,17 +27,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "last_opened_file_path": "C:/Users/mrtik/OneDrive/Ambiente de Trabalho/sdFinal/IPM2023",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\mrtik\OneDrive\Ambiente de Trabalho\sdFinal\IPM2023\nova_maps\lib\Views" />
