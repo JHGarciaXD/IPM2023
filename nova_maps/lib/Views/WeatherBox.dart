@@ -53,61 +53,24 @@ class _WeatherBoxState extends State<WeatherBox> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Center(
-                          child: _weather == null
-                              ? const CircularProgressIndicator()
-                              : Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  _getWeatherIcon(),
-                                  const SizedBox(width: 12.0),
-                                  Text(
-                                    '${_weather?.temperature?.celsius?.toStringAsFixed(1)}°C',
-                                    style: const TextStyle(
-                                      fontSize: 24.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12.0),
-                              Text(
-                                'Vento: ${_weather?.windSpeed} m/s',
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 12.0),
-                              Text(
-                                'Humidade: ${_weather?.humidity}%',
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 5.0),
-                            ],
-                          ),
-                        ),
-                      ],
+              if (_weather == null)
+                CircularProgressIndicator()
+              else
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _getWeatherIcon(),
+                    const SizedBox(height: 12.0),
+                    Text(
+                      '${_weather?.temperature?.celsius?.toStringAsFixed(1)}°C',
+                      style: const TextStyle(
+                        fontSize: 24.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
             ],
           ),
         ),

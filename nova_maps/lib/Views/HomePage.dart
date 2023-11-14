@@ -286,9 +286,10 @@ class _MyHomePageState extends State<MyHomePage> {
             left: 30,
             child: GestureDetector(
               onTap: () {
+                String location = 'Costa Da Caparica';
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WeatherPage()),
+                  MaterialPageRoute(builder: (context) => WeatherPage(location: location)),
                 );
                 setState(() {
                   squareOpacity = 0.8;
@@ -302,7 +303,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 width: 120,
                 height: 120,
-                color: Colors.blue.withOpacity(squareOpacity),
+                color: Colors.grey.withOpacity(squareOpacity),
                 child: Center(
                   child: const WeatherBox(location: 'Costa Da Caparica'),
                 ),
@@ -330,9 +331,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Weather'),
               onTap: () {
+                String location = 'Costa Da Caparica';
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WeatherPage()),
+                  MaterialPageRoute(builder: (context) => WeatherPage(location: location)),
                 );
               },
             ),
