@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:nova_maps/Theme/ThemeConstant.dart';
 import 'package:nova_maps/Theme/ThemeManager.dart';
+import 'package:nova_maps/widgets/DrawerWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Views/UniversityChoice.dart';
@@ -16,9 +17,7 @@ Future<void> main() async {
   runApp(MyApp(isFirstTime: firstTime));
 }
 
-
 ThemeManager _themeManager = ThemeManager();
-
 
 class MyApp extends StatelessWidget {
   final bool isFirstTime;
@@ -32,8 +31,10 @@ class MyApp extends StatelessWidget {
       title: 'OpenStreetMap',
       theme: darkTheme,
       darkTheme: darkTheme,
-      themeMode:  _themeManager.themeMode,  
+      themeMode: _themeManager.themeMode,
       home: isFirstTime ? UniversityChoice() : MyHomePage(),
     );
   }
+
+  
 }

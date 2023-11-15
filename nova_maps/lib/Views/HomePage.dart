@@ -7,6 +7,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:nova_maps/Views/UniversityChoice.dart';
 import 'package:nova_maps/widgets/MapMarkers.dart';
+import '../widgets/DrawerWidget.dart';
 import 'EventsPage.dart';
 import 'MenuPage.dart';
 import 'WeatherPage.dart';
@@ -164,236 +165,270 @@ class MyHomePageState extends State<MyHomePage> {
     // searchController.text = option;
   }
 
+  Widget buildDrawer() => SafeArea(
+        child: DrawerWidget(),
+      );
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Center(child: Text("NOVA Maps")),
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            _scaffoldKey.currentState!.openDrawer();
-          },
-        ),
-        actions: [
-          PopupMenuButton<String>(
-            icon: Icon(Icons.notifications),
-            onSelected: _handleNotificationSelection,
-            itemBuilder: (BuildContext context) {
-              return notificationDetails.keys.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(choice),
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          // Handle delete action here
-                          _deleteNotification(choice);
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              }).toList();
+    return Stack(
+      children: [
+        buildDrawer(),
+        buildPage(context),
+      ],
+    );
+  }
+
+  void openDrawer() => setState(() {
+        yOffset = 320;
+      });
+
+  void closeDrawer() => setState(() {
+        yOffset = 0;
+        scaleFactor = 1;
+      });
+
+  double yOffset = 0;
+  double scaleFactor = 1;
+
+  Widget buildPage(BuildContext context) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 150),
+      transform: Matrix4.translationValues(0, yOffset, 0)..scale(scaleFactor),
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Center(child: Text("NOVA Maps")),
+          leading: IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              if (yOffset == 0)
+                openDrawer();
+              else
+                closeDrawer();
             },
           ),
-        ],
-      ),
-
-      body: Stack(
-        children: [
-          FlutterMap(
-            options: const MapOptions(
-              initialCenter: LatLng(38.66168, -9.20592),
-              initialZoom: 17,
-            ),
-            children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.app',
-              ),
-              CurrentLocationLayer(),
-              RichAttributionWidget(
-                attributions: [
-                  TextSourceAttribution(
-                    'OpenStreetMap contributors',
-                    onTap: () => launchUrl(
-                        Uri.parse('https://openstreetmap.org/copyright')),
-                  ),
-                ],
-              ),
-              PolylineLayer(
-                polylineCulling: false,
-                polylines: [
-                  Polyline(
-                      points: navigationPoints,
-                      color: Colors.blue,
-                      strokeWidth: 5),
-                ],
-              ),
-              MarkerLayer(markers: [
-                ...filteredPointsOfInterest.map(
-                    (point) => pointOfInterestMarker(point, context, this)),
-                if (selectedPoint != null)
-                  selectedPointMenu(selectedPoint!, this)
-              ]),
-            ],
-          ),
-          Positioned(
-            bottom: 40,
-            right: 15,
-            left: 15,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Row(
-                children: <Widget>[
-                  IconButton(
-                    splashColor: Colors.grey,
-                    icon: Icon(Icons.filter_alt),
-                    onPressed: () {
-                      _showFilterOptions(context);
-                    },
-                  ),
-                  Expanded(
-                    child: TextField(
-                      cursorColor: const Color.fromARGB(255, 255, 255, 255),
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.go,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                          hintText: "Search..."),
+          actions: [
+            PopupMenuButton<String>(
+              icon: Icon(Icons.notifications),
+              onSelected: _handleNotificationSelection,
+              itemBuilder: (BuildContext context) {
+                return notificationDetails.keys.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(choice),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            // Handle delete action here
+                            _deleteNotification(choice);
+                          },
+                        ),
+                      ],
                     ),
-                  ),
-                  IconButton(
-                    splashColor: Colors.grey,
-                    icon: Icon(Icons.list),
-                    onPressed: () {
-                      _showPointsOfInterestOptions(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: 30,
-            left: 30,
-            child: GestureDetector(
-              onTap: () {
-                String location = 'Costa Da Caparica';
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => WeatherPage(location: location)),
-                );
-                setState(() {
-                  squareOpacity = 0.8;
-                });
-              },
-              onTapUp: (_) {
-                setState(() {
-                  squareOpacity = 0.5;
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 74, 74, 75)
-                      .withOpacity(squareOpacity),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                width: 120,
-                height: 120,
-                child: Center(
-                  child: const WeatherBox(location: 'Costa Da Caparica'),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(),
-              child: Text(
-                'Main Options',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text('Weather'),
-              onTap: () {
-                String location = 'Costa Da Caparica';
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => WeatherPage(location: location)),
-                );
-              },
-            ),
-            ListTile(
-              title: Text('Menu'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MenuPage()));
-                // Handle option 1
-              },
-            ),
-            ListTile(
-              title: Text('Events'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EventsPage()));
-                // Handle option 1
-              },
-            ),
-            ListTile(
-              title: Text('Notifications'),
-              trailing: Checkbox(
-                value: notificationsEnabled,
-                onChanged: (value) {
-                  setState(() {
-                    notificationsEnabled = value!;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              title: Text('Choose a university'),
-              onTap: () {
-                // Navigate to the university choice screen
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => UniversityChoice()),
-                );
+                  );
+                }).toList();
               },
             ),
           ],
         ),
+
+        body: Stack(
+          children: [
+            FlutterMap(
+              options: const MapOptions(
+                initialCenter: LatLng(38.66168, -9.20592),
+                initialZoom: 17,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.example.app',
+                ),
+                CurrentLocationLayer(),
+                RichAttributionWidget(
+                  attributions: [
+                    TextSourceAttribution(
+                      'OpenStreetMap contributors',
+                      onTap: () => launchUrl(
+                          Uri.parse('https://openstreetmap.org/copyright')),
+                    ),
+                  ],
+                ),
+                PolylineLayer(
+                  polylineCulling: false,
+                  polylines: [
+                    Polyline(
+                        points: navigationPoints,
+                        color: Colors.blue,
+                        strokeWidth: 5),
+                  ],
+                ),
+                MarkerLayer(markers: [
+                  ...filteredPointsOfInterest.map(
+                      (point) => pointOfInterestMarker(point, context, this)),
+                  if (selectedPoint != null)
+                    selectedPointMenu(selectedPoint!, this)
+                ]),
+              ],
+            ),
+            Positioned(
+              bottom: 40,
+              right: 15,
+              left: 15,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                      splashColor: Colors.grey,
+                      icon: Icon(Icons.filter_alt),
+                      onPressed: () {
+                        _showFilterOptions(context);
+                      },
+                    ),
+                    Expanded(
+                      child: TextField(
+                        cursorColor: const Color.fromARGB(255, 255, 255, 255),
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.go,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 15),
+                            hintText: "Search..."),
+                      ),
+                    ),
+                    IconButton(
+                      splashColor: Colors.grey,
+                      icon: Icon(Icons.list),
+                      onPressed: () {
+                        _showPointsOfInterestOptions(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: 30,
+              left: 30,
+              child: GestureDetector(
+                onTap: () {
+                  String location = 'Costa Da Caparica';
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => WeatherPage(location: location)),
+                  );
+                  setState(() {
+                    squareOpacity = 0.8;
+                  });
+                },
+                onTapUp: (_) {
+                  setState(() {
+                    squareOpacity = 0.5;
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 74, 74, 75)
+                        .withOpacity(squareOpacity),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  width: 120,
+                  height: 120,
+                  child: Center(
+                    child: const WeatherBox(location: 'Costa Da Caparica'),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        // drawer:
+        // Drawer(
+        //   child: ListView(
+        //     padding: EdgeInsets.zero,
+        //     children: <Widget>[
+        //       DrawerHeader(
+        //         decoration: BoxDecoration(),
+        //         child: Text(
+        //           'Main Options',
+        //           style: TextStyle(
+        //             color: Colors.white,
+        //             fontSize: 24,
+        //           ),
+        //         ),
+        //       ),
+        //       ListTile(
+        //         title: Text('Weather'),
+        //         onTap: () {
+        //           String location = 'Costa Da Caparica';
+        //           Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //                 builder: (context) => WeatherPage(location: location)),
+        //           );
+        //         },
+        //       ),
+        //       ListTile(
+        //         title: Text('Menu'),
+        //         onTap: () {
+        //           Navigator.push(context,
+        //               MaterialPageRoute(builder: (context) => MenuPage()));
+        //           // Handle option 1
+        //         },
+        //       ),
+        //       ListTile(
+        //         title: Text('Events'),
+        //         onTap: () {
+        //           Navigator.push(context,
+        //               MaterialPageRoute(builder: (context) => EventsPage()));
+        //           // Handle option 1
+        //         },
+        //       ),
+        //       ListTile(
+        //         title: Text('Notifications'),
+        //         trailing: Checkbox(
+        //           value: notificationsEnabled,
+        //           onChanged: (value) {
+        //             setState(() {
+        //               notificationsEnabled = value!;
+        //             });
+        //           },
+        //         ),
+        //       ),
+        //       ListTile(
+        //         title: Text('Choose a university'),
+        //         onTap: () {
+        //           // Navigate to the university choice screen
+        //           Navigator.pushReplacement(
+        //             context,
+        //             MaterialPageRoute(builder: (context) => UniversityChoice()),
+        //           );
+        //         },
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: Colors.blueAccent,
+        //   onPressed: () {
+        //     test();
+        //   },
+        //   child: const Icon(
+        //     Icons.route,
+        //     color: Colors.white,
+        //   ),
+        // ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.blueAccent,
-      //   onPressed: () {
-      //     test();
-      //   },
-      //   child: const Icon(
-      //     Icons.route,
-      //     color: Colors.white,
-      //   ),
-      // ),
     );
   }
 
