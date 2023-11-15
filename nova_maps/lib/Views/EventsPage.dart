@@ -25,75 +25,88 @@ class EventsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Events'),
+        centerTitle: true,
       ),
-      body: GridView.builder(
+      body: Padding(
         padding: EdgeInsets.all(16.0),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16.0,
-          crossAxisSpacing: 16.0,
-          childAspectRatio: 0.8,
-        ),
-        itemCount: events.length,
-        itemBuilder: (context, index) {
-          final event = events[index];
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 16.0,
+            crossAxisSpacing: 16.0,
+            childAspectRatio: 0.8,
+          ),
+          itemCount: events.length,
+          itemBuilder: (context, index) {
+            final event = events[index];
 
-          return Card(
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(8.0),
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EventDetailsPage(event: event),
                   ),
-                  child: Image.network(
-                    event.imageUrl,
-                    height: 120.0,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+                );
+              },
+              child: Card(
+                elevation: 4.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        event.title,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(8.0),
                       ),
-                      SizedBox(height: 4.0),
-                      Text(
-                        'Date: ${event.date}',
-                        style: TextStyle(fontSize: 12.0),
+                      child: Image.network(
+                        event.imageUrl,
+                        height: 120.0,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
-                      Text(
-                        'Time: ${event.time}',
-                        style: TextStyle(fontSize: 12.0),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            event.title,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 4.0),
+                          Text(
+                            'Date: ${event.date}',
+                            style: TextStyle(fontSize: 12.0),
+                          ),
+                          Text(
+                            'Time: ${event.time}',
+                            style: TextStyle(fontSize: 12.0),
+                          ),
+                          Text(
+                            'Location: ${event.location}',
+                            style: TextStyle(fontSize: 12.0),
+                          ),
+                          SizedBox(height: 8.0),
+                          Text(
+                            event.description,
+                            style: TextStyle(fontSize: 12.0),
+                          ),
+                        ],
                       ),
-                      Text(
-                        'Location: ${event.location}',
-                        style: TextStyle(fontSize: 12.0),
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        event.description,
-                        style: TextStyle(fontSize: 12.0),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -115,4 +128,53 @@ class Event {
     required this.imageUrl,
     required this.description,
   });
+}
+
+class EventDetailsPage extends StatelessWidget {
+  final Event event;
+
+  EventDetailsPage({required this.event});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(event.title),
+        centerTitle: true,
+
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+              event.imageUrl,
+              height: 200.0,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              'Date: ${event.date}',
+              style: TextStyle(fontSize: 16.0),
+            ),
+            Text(
+              'Time: ${event.time}',
+              style: TextStyle(fontSize: 16.0),
+            ),
+            Text(
+              'Location: ${event.location}',
+              style: TextStyle(fontSize: 16.0),
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              event.description,
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
