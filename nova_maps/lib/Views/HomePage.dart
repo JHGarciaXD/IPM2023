@@ -212,28 +212,38 @@ class MyHomePageState extends State<MyHomePage> {
             PopupMenuButton<String>(
               icon: Icon(Icons.notifications),
               onSelected: _handleNotificationSelection,
+              offset: Offset(0, 50), // Adjust the offset as needed
               itemBuilder: (BuildContext context) {
                 return notificationDetails.keys.map((String choice) {
                   return PopupMenuItem<String>(
                     value: choice,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(choice),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            // Handle delete action here
-                            _deleteNotification(choice);
-                          },
-                        ),
-                      ],
+                    child: Container(
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            choice,
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              // Handle delete action here
+                              _deleteNotification(choice);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }).toList();
               },
             ),
           ],
+
+
+
         ),
 
         body: Stack(
@@ -432,28 +442,7 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _showNotificationsPanel() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.8,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            child: _buildSlidingPanel(),
-          ),
-        );
-      },
-    );
-  }
+
 
   void _showFilterOptions(BuildContext context) {
     showModalBottomSheet(
@@ -529,83 +518,63 @@ class MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(details.title),
+          title: Text(
+            details.title,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(details.explanation),
               SizedBox(height: 10),
-              Text('Date: ${details.date}'),
+              Text(
+                'Details:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Text(
+                details.explanation,
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 30),
+              Text(
+                  'Date: ${details.date}',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 5),
             ],
           ),
+
           actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, // Set the button's background color
+                    minimumSize: Size(40, 20), // Set the minimum width and height as needed
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+
+                    child: Text(
+                      'OK',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+
+                  ),
+                ),
+              ],
             ),
           ],
+
         );
       },
     );
   }
 
-  Widget _buildSlidingPanel() {
-    return Column(
-      children: [
-        Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: notificationDetails.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final notificationKey =
-                        notificationDetails.keys.toList()[index];
-                    final NotificationDetails details =
-                        notificationDetails[notificationKey]!;
 
-                    return Dismissible(
-                      key: Key(notificationKey),
-                      background: Container(
-                        color: Colors.red,
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 16.0),
-                            child: Icon(Icons.delete, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      onDismissed: (direction) {
-                        // Handle notification deletion
-                        setState(() {
-                          notificationDetails.remove(notificationKey);
-                        });
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: ListTile(
-                          title: Text(details.title),
-                          onTap: () {
-                            _handleNotificationSelection(notificationKey);
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+
 
   void _deleteNotification(String notificationKey) {
     setState(() {
