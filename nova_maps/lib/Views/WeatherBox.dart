@@ -27,20 +27,20 @@ class _WeatherBoxState extends State<WeatherBox> {
 
   Icon _getWeatherIcon() {
     if (_weather == null) {
-      return const Icon(Icons.cloud, color: Colors.black);
+      return const Icon(Icons.cloud, color: Color.fromARGB(255, 245, 245, 245));
     }
 
     switch (_weather?.weatherMain) {
       case 'Céu limpo':
-        return const Icon(Icons.wb_sunny, color: Colors.black);
+        return const Icon(Icons.wb_sunny, color: Color.fromARGB(255, 255, 255, 255));
       case 'Nuvens':
-        return const Icon(Icons.cloud, color: Colors.black);
+        return const Icon(Icons.cloud, color: Color.fromARGB(255, 255, 255, 255));
       case 'Chuva':
-        return const Icon(Icons.beach_access, color: Colors.black);
+        return const Icon(Icons.beach_access, color: Color.fromARGB(255, 255, 255, 255));
       case 'Neve':
-        return const Icon(Icons.ac_unit, color: Colors.black);
+        return const Icon(Icons.ac_unit, color: Color.fromARGB(255, 255, 255, 255));
       default:
-        return const Icon(Icons.cloud, color: Colors.black);
+        return const Icon(Icons.cloud, color: Color.fromARGB(255, 255, 255, 255));
     }
   }
 
@@ -50,6 +50,7 @@ class _WeatherBoxState extends State<WeatherBox> {
       
       alignment: Alignment.center,
       child: Container(
+        
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -66,7 +67,7 @@ class _WeatherBoxState extends State<WeatherBox> {
                       '${_weather?.temperature?.celsius?.toStringAsFixed(1)}°C',
                       style: const TextStyle(
                         fontSize: 24.0,
-                        color: Colors.black,
+                        color: Color.fromARGB(255, 255, 255, 255),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

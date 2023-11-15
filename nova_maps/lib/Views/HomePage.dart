@@ -14,7 +14,6 @@ import 'WeatherBox.dart';
 import 'NotificationsList.dart';
 
 class MyHomePage extends StatefulWidget {
-
   @override
   MyHomePageState createState() => MyHomePageState();
 }
@@ -31,6 +30,24 @@ class NotificationDetails {
   });
 }
 
+var pointsOfInterest = [
+  PointOfInterest(
+      coordinates: const LatLng(38.66115, -9.20345),
+      name: "Building 2",
+      type: "building",
+      description: "This is the compsci building."),
+  PointOfInterest(
+      coordinates: const LatLng(38.66175, -9.20465),
+      name: "Cafeteria",
+      type: "restaurant",
+      description: "This is the cafeteria."),
+  PointOfInterest(
+      coordinates: const LatLng(38.66085, -9.20575),
+      name: "Building 7",
+      type: "building",
+      description: "This is the math building.")
+];
+
 class MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool? notificationsEnabled = true;
@@ -43,6 +60,7 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    initializeFilters();
     searchFocusNode.addListener(() {
       if (searchFocusNode.hasFocus) {
         showOverlay(context);
@@ -77,6 +95,18 @@ class MyHomePageState extends State<MyHomePage> {
     ),
     // Add more details as needed
   };
+
+  Set<String> getLocationTypes() {
+    return pointsOfInterest.map((e) => e.type).toSet();
+  }
+
+  Map<String, bool> typeFilters = {};
+
+  void initializeFilters() {
+    getLocationTypes().forEach((type) {
+      typeFilters[type] = true; // Initially, all types are selected
+    });
+  }
 
   void setNavigationPoints(List<LatLng> points) {
     setState(() {
@@ -174,7 +204,6 @@ class MyHomePageState extends State<MyHomePage> {
         ],
       ),
 
-
       body: Stack(
         children: [
           FlutterMap(
@@ -200,19 +229,18 @@ class MyHomePageState extends State<MyHomePage> {
               PolylineLayer(
                 polylineCulling: false,
                 polylines: [
-                  Polyline(points: navigationPoints, color: Colors.blue, strokeWidth: 5),
+                  Polyline(
+                      points: navigationPoints,
+                      color: Colors.blue,
+                      strokeWidth: 5),
                 ],
               ),
-              MarkerLayer(
-                markers: [
-                  ...pointsOfInterest.map(
-                    (point) => pointOfInterestMarker(point, context, this)
-                  ),
-                  if (selectedPoint != null)
-                    selectedPointMenu(selectedPoint!, this)
-
-              ]
-              ),
+              MarkerLayer(markers: [
+                ...filteredPointsOfInterest.map(
+                    (point) => pointOfInterestMarker(point, context, this)),
+                if (selectedPoint != null)
+                  selectedPointMenu(selectedPoint!, this)
+              ]),
             ],
           ),
           Positioned(
@@ -244,6 +272,13 @@ class MyHomePageState extends State<MyHomePage> {
                           hintText: "Search..."),
                     ),
                   ),
+                  IconButton(
+                    splashColor: Colors.grey,
+                    icon: Icon(Icons.list),
+                    onPressed: () {
+                      _showPointsOfInterestOptions(context);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -269,10 +304,13 @@ class MyHomePageState extends State<MyHomePage> {
                 });
               },
               child: Container(
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 74, 74, 75)
+                      .withOpacity(squareOpacity),
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 width: 120,
                 height: 120,
-                color: const Color.fromARGB(255, 74, 74, 75)
-                    .withOpacity(squareOpacity),
                 child: Center(
                   child: const WeatherBox(location: 'Costa Da Caparica'),
                 ),
@@ -333,7 +371,6 @@ class MyHomePageState extends State<MyHomePage> {
                 },
               ),
             ),
-
             ListTile(
               title: Text('Choose a university'),
               onTap: () {
@@ -387,39 +424,71 @@ class MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return ListView(
+              children: typeFilters.keys.map((type) {
+                return CheckboxListTile(
+                  title: Text(type),
+                  value: typeFilters[type],
+                  onChanged: (bool? value) {
+                    setModalState(() {
+                      typeFilters[type] = value!;
+                    });
+                    _applyFilters();
+                  },
+                );
+              }).toList(),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  List<PointOfInterest> filteredPointsOfInterest = List.from(pointsOfInterest);
+
+  void _applyFilters() {
+    setState(() {
+      filteredPointsOfInterest = pointsOfInterest.where((point) {
+        return typeFilters[point.type] ?? true;
+      }).toList();
+    });
+  }
+
+  void _showPointsOfInterestOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
         return Container(
-          child: Wrap(
-            children: <Widget>[
-              ListTile(
-                  leading: Icon(Icons.filter_1),
-                  title: Text('Filter Option 1'),
-                  onTap: () => {
-                        // Handle Filter Option 1
-                        Navigator.of(context).pop(),
-                      }),
-              ListTile(
-                leading: Icon(Icons.filter_2),
-                title: Text('Filter Option 2'),
+          child: ListView.builder(
+            itemCount: filteredPointsOfInterest.length,
+            itemBuilder: (BuildContext context, int index) {
+              final point = filteredPointsOfInterest[index];
+              return ListTile(
+                leading: Icon(Icons.place), // You can change this icon
+                title: Text(point.name),
+                subtitle: Text(point.type),
                 onTap: () => {
-                  // Handle Filter Option 2
+                  // Handle the selection
+                  selectPoint(point),
                   Navigator.of(context).pop(),
                 },
-              ),
-              // Add more options as needed
-            ],
+              );
+            },
           ),
         );
       },
     );
   }
+
   void _handleNotificationSelection(String choice) {
-    NotificationDetails details =
-        notificationDetails[choice] ??
-            NotificationDetails(
-              title: 'Unknown Title',
-              explanation: 'No explanation available',
-              date: 'Unknown Date',
-            );
+    NotificationDetails details = notificationDetails[choice] ??
+        NotificationDetails(
+          title: 'Unknown Title',
+          explanation: 'No explanation available',
+          date: 'Unknown Date',
+        );
 
     showDialog(
       context: context,
@@ -447,6 +516,7 @@ class MyHomePageState extends State<MyHomePage> {
       },
     );
   }
+
   Widget _buildSlidingPanel() {
     return Column(
       children: [
@@ -458,8 +528,10 @@ class MyHomePageState extends State<MyHomePage> {
                 child: ListView.builder(
                   itemCount: notificationDetails.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final notificationKey = notificationDetails.keys.toList()[index];
-                    final NotificationDetails details = notificationDetails[notificationKey]!;
+                    final notificationKey =
+                        notificationDetails.keys.toList()[index];
+                    final NotificationDetails details =
+                        notificationDetails[notificationKey]!;
 
                     return Dismissible(
                       key: Key(notificationKey),
@@ -499,10 +571,10 @@ class MyHomePageState extends State<MyHomePage> {
       ],
     );
   }
+
   void _deleteNotification(String notificationKey) {
     setState(() {
       notificationDetails.remove(notificationKey);
     });
   }
-
 }
