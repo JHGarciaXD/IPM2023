@@ -4,18 +4,18 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:latlong2/latlong.dart';
+import 'package:nova_maps/widgets/MapMarkers.dart';
 
 class NavigationPage extends StatelessWidget {
-  final LatLng point;
-  final String name;
+  final PointOfInterest point;
 
-  const NavigationPage(this.point, this.name, {super.key});
+  const NavigationPage(this.point, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(name),
+        title: Text(point.name),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
@@ -30,28 +30,11 @@ class NavigationPage extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 30),
-              child: const Text(
-                  'One of the buildings of all time. Click below to obtain navigation directions.',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              child: Text(
+                  point.description,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-            ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                IconButton(
-                  iconSize: 60,
-                  icon: const Icon(Icons.circle),
-                  color: Colors.blue,
-                  onPressed: () {Navigator.pop(context);},
-                ),
-                IconButton(
-                  iconSize: 40,
-                  color: Colors.grey.shade100,
-                  icon: const Icon(Icons.directions),
-                  onPressed: () {Navigator.pop(context);},
-                ),
-              ],
-            ),
+            )
           ],
         ),
     );
