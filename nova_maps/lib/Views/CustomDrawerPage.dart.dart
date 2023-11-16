@@ -63,61 +63,64 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            if (yOffset == 0)
-              openDrawer();
-            else
-              closeDrawer();
-          },
-        ),
-        title: Text(title), // Replace with your title
-        actions: [
-          if (item == DrawerItems.home || item == DrawerItems.notifications)
-            PopupMenuButton<String>(
-              icon: Icon(Icons.notifications),
-              onSelected: _handleNotificationSelection,
-              offset: Offset(0, 50), // Adjust the offset as needed
-              itemBuilder: (BuildContext context) {
-                return notificationDetails.keys.map((String choice) {
-                  return PopupMenuItem<String>(
-                    value: choice,
-                    child: Container(
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            choice,
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              // Handle delete action here
-                              _deleteNotification(choice);
-                            },
-                          ),
-                        ],
+    return Container(
+      color: Colors.grey,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              if (yOffset == 0)
+                openDrawer();
+              else
+                closeDrawer();
+            },
+          ),
+          title: Text(title), // Replace with your title
+          actions: [
+            if (item == DrawerItems.home || item == DrawerItems.notifications)
+              PopupMenuButton<String>(
+                icon: Icon(Icons.notifications),
+                onSelected: _handleNotificationSelection,
+                offset: Offset(0, 50), // Adjust the offset as needed
+                itemBuilder: (BuildContext context) {
+                  return notificationDetails.keys.map((String choice) {
+                    return PopupMenuItem<String>(
+                      value: choice,
+                      child: Container(
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              choice,
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                // Handle delete action here
+                                _deleteNotification(choice);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                }).toList();
-              },
-            ),
-        ],
+                    );
+                  }).toList();
+                },
+              ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            buildDrawer(), // Assuming this is your drawer widget
+            buildPage(context), // Your main page content
+          ],
+        ),
+        // You can add other Scaffold properties like floatingActionButton, drawer, etc.
       ),
-      body: Stack(
-        children: [
-          buildDrawer(), // Assuming this is your drawer widget
-          buildPage(context), // Your main page content
-        ],
-      ),
-      // You can add other Scaffold properties like floatingActionButton, drawer, etc.
     );
   }
 
