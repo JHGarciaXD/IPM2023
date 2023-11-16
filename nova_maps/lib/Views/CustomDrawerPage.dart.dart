@@ -33,7 +33,7 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
   }
 
   void openDrawer() => setState(() {
-        yOffset = 430;
+        yOffset = 370;
       });
 
   void closeDrawer() => setState(() {

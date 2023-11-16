@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:nova_maps/Views/WeatherPageSecundary.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:nova_maps/Views/UniversityChoice.dart';
@@ -320,9 +321,8 @@ class MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => WeatherPage(
+                      builder: (context) => WeatherPageSecundary(
                             location: LOCATION,
-                            openDrawer: widget.openDrawer,
                           )),
                 );
                 setState(() {
