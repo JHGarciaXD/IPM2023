@@ -92,23 +92,39 @@ class _WeatherPageSecundaryState extends State<WeatherPageSecundary> {
 
               // Wind and Humidity
               SizedBox(height: 16.0),
-              Text(
-                'Wind: ${_weather?.windSpeed} m/s    Humidity: ${_weather?.humidity}%',
-                style: TextStyle(
-                  fontSize: 25.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+              Container(
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Text(
+                  'Wind: ${_weather?.windSpeed} m/s    Humidity: ${_weather?.humidity}%',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
 
+
               // Forecast for the Next Day
-              SizedBox(height: 24.0),
-              Text(
-                'Feels Like Temperature:  ${_weather?.tempFeelsLike}',
-                style: TextStyle(
-                    fontSize: 20.0,
+              SizedBox(height: 10.0),
+              Container(
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Text(
+                  'Feels Like Temperature:  ${_weather?.tempFeelsLike}',
+                  style: TextStyle(
+                    fontSize: 16.0,
                     color: Colors.white,
-                    fontWeight: FontWeight.w300),
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
               ),
             ],
           ),
