@@ -20,12 +20,22 @@ class EventsPage extends StatelessWidget {
     ),
   ];
 
+  final VoidCallback openDrawer;
+
+  EventsPage({required this.openDrawer});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Events'),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            openDrawer();
+          },
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -141,7 +151,6 @@ class EventDetailsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(event.title),
         centerTitle: true,
-
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

@@ -6,7 +6,11 @@ import 'package:weather/weather.dart';
 
 class WeatherPage extends StatefulWidget {
   final String location;
-  const WeatherPage({Key? key, required this.location}) : super(key: key);
+  final VoidCallback openDrawer;
+
+  const WeatherPage(
+      {Key? key, required this.location, required this.openDrawer})
+      : super(key: key);
 
   @override
   _WeatherPageState createState() => _WeatherPageState();
@@ -50,15 +54,15 @@ class _WeatherPageState extends State<WeatherPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            widget.openDrawer();
+          },
+        ),
         title: Text('Weather Page', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: Colors.grey[800], // Dark grey background
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -90,7 +94,10 @@ class _WeatherPageState extends State<WeatherPage> {
               SizedBox(height: 16.0),
               Text(
                 'Wind: ${_weather?.windSpeed} m/s    Humidity: ${_weather?.humidity}%',
-                style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.w600,
+                style: TextStyle(
+                  fontSize: 25.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
 
@@ -98,7 +105,10 @@ class _WeatherPageState extends State<WeatherPage> {
               SizedBox(height: 24.0),
               Text(
                 'Feels Like Temperature:  ${_weather?.tempFeelsLike}',
-                style: TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.w300),
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300),
               ),
             ],
           ),

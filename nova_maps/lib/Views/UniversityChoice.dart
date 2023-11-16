@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:nova_maps/Views/CustomDrawerPage.dart.dart';
 import 'package:nova_maps/Views/HomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-  const double SPACING = 30;
+const double SPACING = 30;
 
 class UniversityChoice extends StatelessWidget {
 
@@ -11,6 +11,7 @@ class UniversityChoice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+     
         title: Center(child: Text('Choose an University')), //  Updated title
       ),
       body: Padding(
@@ -27,7 +28,7 @@ class UniversityChoice extends StatelessWidget {
                       updateFirstTime();
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => MyHomePage()),
+                        MaterialPageRoute(builder: (context) => CustomDrawerPage()),
                       );
                     },
                   ),

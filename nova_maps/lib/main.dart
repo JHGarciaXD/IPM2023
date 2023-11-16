@@ -6,6 +6,7 @@ import 'package:nova_maps/Theme/ThemeManager.dart';
 import 'package:nova_maps/widgets/DrawerWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Views/CustomDrawerPage.dart.dart';
 import 'Views/UniversityChoice.dart';
 import 'Views/HomePage.dart';
 
@@ -32,9 +33,7 @@ class MyApp extends StatelessWidget {
       theme: darkTheme,
       darkTheme: darkTheme,
       themeMode: _themeManager.themeMode,
-      home: isFirstTime ? UniversityChoice() : MyHomePage(),
+      home: isFirstTime ? UniversityChoice() : CustomDrawerPage(),
     );
   }
-
-  
 }

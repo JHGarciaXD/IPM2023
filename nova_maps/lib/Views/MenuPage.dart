@@ -16,6 +16,10 @@ class MenuItem {
 }
 
 class MenuPage extends StatelessWidget {
+  final VoidCallback openDrawer;
+
+  MenuPage({required this.openDrawer});
+
   final List<Restaurant> restaurants = [
     Restaurant(
       name: 'A Tia',
@@ -69,6 +73,12 @@ class MenuPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Menu'),
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            openDrawer();
+          },
+        ),
       ),
       body: ListView.builder(
         itemCount: restaurants.length,
@@ -89,11 +99,9 @@ class MenuPage extends StatelessWidget {
                   trailing: Text('\$${menuItem.price.toStringAsFixed(2)}'),
                 ),
             ],
-
           );
         },
       ),
     );
   }
 }
-
