@@ -4,19 +4,16 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:weather/weather.dart';
 
-class WeatherPageSecundary extends StatefulWidget {
+class WeatherPageSecond extends StatefulWidget {
   final String location;
 
-
-  const WeatherPageSecundary(
-      {Key? key, required this.location})
-      : super(key: key);
+  const WeatherPageSecond({Key? key, required this.location}) : super(key: key);
 
   @override
-  _WeatherPageSecundaryState createState() => _WeatherPageSecundaryState();
+  _WeatherPageSecondState createState() => _WeatherPageSecondState();
 }
 
-class _WeatherPageSecundaryState extends State<WeatherPageSecundary> {
+class _WeatherPageSecondState extends State<WeatherPageSecond> {
   WeatherFactory wf = WeatherFactory("791419c029c33fc5048c2cba277d742b");
   Weather? _weather;
 
@@ -89,9 +86,9 @@ class _WeatherPageSecundaryState extends State<WeatherPageSecundary> {
                   fontWeight: FontWeight.w800,
                 ),
               ),
+              SizedBox(height: 40.0),
 
               // Wind and Humidity
-              SizedBox(height: 16.0),
               Container(
                 padding: EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
@@ -107,7 +104,6 @@ class _WeatherPageSecundaryState extends State<WeatherPageSecundary> {
                   ),
                 ),
               ),
-
 
               // Forecast for the Next Day
               SizedBox(height: 10.0),

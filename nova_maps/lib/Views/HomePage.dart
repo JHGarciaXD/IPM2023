@@ -26,18 +26,6 @@ class MyHomePage extends StatefulWidget {
   MyHomePageState createState() => MyHomePageState();
 }
 
-class NotificationDetails {
-  final String title;
-  final String explanation;
-  final String date;
-
-  NotificationDetails({
-    required this.title,
-    required this.explanation,
-    required this.date,
-  });
-}
-
 var pointsOfInterest = [
   PointOfInterest(
       coordinates: const LatLng(38.66115, -9.20345),
@@ -58,7 +46,6 @@ var pointsOfInterest = [
 
 class MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool? notificationsEnabled = true;
   double squareOpacity = 0.5;
   FocusNode searchFocusNode = FocusNode();
   OverlayEntry? overlayEntry;
@@ -85,24 +72,6 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   // Navigation System
-  Map<String, NotificationDetails> notificationDetails = {
-    'Notification 1': NotificationDetails(
-      title: 'Atenção Obras',
-      explanation: 'Edificio 7 com obras no corredor xpto',
-      date: '2023-11-14',
-    ),
-    'Notification 2': NotificationDetails(
-      title: 'Parque 7 fechado',
-      explanation: 'Até domingo, vão ocorrer limpezas no parque.',
-      date: '2023-11-15',
-    ),
-    'Notification 3': NotificationDetails(
-      title: 'Cantina fechada',
-      explanation: 'Cantina só abre a partir de dezembro',
-      date: '2023-11-16',
-    ),
-    // Add more details as needed
-  };
 
   Set<String> getLocationTypes() {
     return pointsOfInterest.map((e) => e.type).toSet();
@@ -190,49 +159,6 @@ class MyHomePageState extends State<MyHomePage> {
   Widget MapPage(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: Center(child: Text("NOVA Maps")),
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            widget.openDrawer();
-          },
-        ),
-        actions: [
-          PopupMenuButton<String>(
-            icon: Icon(Icons.notifications),
-            onSelected: _handleNotificationSelection,
-            offset: Offset(0, 50), // Adjust the offset as needed
-            itemBuilder: (BuildContext context) {
-              return notificationDetails.keys.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Container(
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          choice,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            // Handle delete action here
-                            _deleteNotification(choice);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList();
-            },
-          ),
-        ],
-      ),
 
       body: Stack(
         children: [
@@ -321,7 +247,7 @@ class MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => WeatherPageSecundary(
+                      builder: (context) => WeatherPageSecond(
                             location: LOCATION,
                           )),
                 );
@@ -489,75 +415,5 @@ class MyHomePageState extends State<MyHomePage> {
         );
       },
     );
-  }
-
-  void _handleNotificationSelection(String choice) {
-    NotificationDetails details = notificationDetails[choice] ??
-        NotificationDetails(
-          title: 'Unknown Title',
-          explanation: 'No explanation available',
-          date: 'Unknown Date',
-        );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            details.title,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 10),
-              Text(
-                'Details:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              Text(
-                details.explanation,
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 30),
-              Text(
-                'Date: ${details.date}',
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 5),
-            ],
-          ),
-          actions: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue, // Set the button's background color
-                    minimumSize: Size(
-                        40, 20), // Set the minimum width and height as needed
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    'OK',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _deleteNotification(String notificationKey) {
-    setState(() {
-      notificationDetails.remove(notificationKey);
-    });
   }
 }

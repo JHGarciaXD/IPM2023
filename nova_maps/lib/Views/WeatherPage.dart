@@ -53,17 +53,6 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            widget.openDrawer();
-          },
-        ),
-        title: Text('Weather Page', style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        backgroundColor: Colors.grey[800], // Dark grey background
-      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -128,7 +117,6 @@ class _WeatherPageState extends State<WeatherPage> {
             ],
           ),
         ),
-
       ),
     );
   }

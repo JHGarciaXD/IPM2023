@@ -71,15 +71,6 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Menu'),
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            openDrawer();
-          },
-        ),
-      ),
       body: ListView.builder(
         itemCount: restaurants.length,
         itemBuilder: (context, index) {

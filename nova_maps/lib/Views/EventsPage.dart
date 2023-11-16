@@ -27,16 +27,7 @@ class EventsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Events'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            openDrawer();
-          },
-        ),
-      ),
+   
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: GridView.builder(
