@@ -28,20 +28,95 @@ class MyHomePage extends StatefulWidget {
 
 var pointsOfInterest = [
   PointOfInterest(
+      coordinates: LatLng(38.66162, -9.20681),
+      name: "Tanto Faz Academic Bar",
+      type: "restaurant",
+      description: "..."),
+  PointOfInterest(
+      coordinates: LatLng(38.66176, -9.20481),
+      name: "Cantine",
+      type: "restaurant",
+      description: "..."),
+  PointOfInterest(
+      coordinates: LatLng(38.66016, -9.20545),
+      name: "My Spot Bar",
+      type: "restaurant",
+      description: "..."),
+  PointOfInterest(
+      coordinates: LatLng(38.66264, -9.20518),
+      name: "C@mpus Bar",
+      type: "restaurant",
+      description: "..."),
+  PointOfInterest(
+      coordinates: LatLng(38.66199, -9.20787),
+      name: "Nova Alquimia Restaurant",
+      type: "restaurant",
+      description: "..."),
+  PointOfInterest(
+      coordinates: LatLng(38.65850, -9.20462),
+      name: "Sport Bar",
+      type: "restaurant",
+      description: "..."),
+  PointOfInterest(
+      coordinates: LatLng(38.66177, -9.20546),
+      name: "Casa do Pessoal",
+      type: "restaurant",
+      description: "..."),
+  PointOfInterest(
+    coordinates: const LatLng(38.66128, -9.20569),
+    name: "Building 1",
+    type: "building",
+    description: "Physics Department."),
+  PointOfInterest(
       coordinates: const LatLng(38.66115, -9.20345),
       name: "Building 2",
       type: "building",
       description: "This is the compsci building."),
   PointOfInterest(
-      coordinates: const LatLng(38.66175, -9.20465),
-      name: "Cafeteria",
-      type: "restaurant",
-      description: "This is the cafeteria."),
+    coordinates: const LatLng(38.663296, -9.207253),
+    name: "Building 3",
+    type: "building",
+    description: "IT Infrastructures division."),
+  PointOfInterest(
+    coordinates: const LatLng(38.66289, -9.20721),
+    name: "Building 4",
+    type: "building",
+    description: "Fablab."),
+  PointOfInterest(
+    coordinates: const LatLng(38.66342, -9.20686),
+    name: "Building 5",
+    type: "building",
+    description: "Caixa Geral de Depósitos Auditorium."),
+  PointOfInterest(
+    coordinates: const LatLng(38.66234, -9.20778),
+    name: "Minotaur's Building",
+    type: "building",
+    description: "Chemistry & Bio Chemistry Department."),
   PointOfInterest(
       coordinates: const LatLng(38.66085, -9.20575),
       name: "Building 7",
       type: "building",
-      description: "This is the math building.")
+      description: "This is the math building."),
+  PointOfInterest(
+    coordinates: const LatLng(38.66048, -9.20662),
+    name: "Building 8",
+    type: "building",
+    description: "Mechanical Engineering Department."),
+  PointOfInterest(
+    coordinates: const LatLng(38.66021, -9.20713),
+    name: "Building 9",
+    type: "building",
+    description: "Civil Engineering building."),
+  PointOfInterest(
+      coordinates: const LatLng(38.66067, -9.20489),
+      name: "Building 10",
+      type: "building",
+      description: "Electrical Engineering Department."),
+  PointOfInterest(
+      coordinates: const LatLng(38.66293, -9.20659),
+      name: "Building 11",
+      type: "building",
+      description: "E-Learning Labs.")
 ];
 
 class MyHomePageState extends State<MyHomePage> {
@@ -275,82 +350,6 @@ class MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      // drawer:
-      // Drawer(
-      //   child: ListView(
-      //     padding: EdgeInsets.zero,
-      //     children: <Widget>[
-      //       DrawerHeader(
-      //         decoration: BoxDecoration(),
-      //         child: Text(
-      //           'Main Options',
-      //           style: TextStyle(
-      //             color: Colors.white,
-      //             fontSize: 24,
-      //           ),
-      //         ),
-      //       ),
-      //       ListTile(
-      //         title: Text('Weather'),
-      //         onTap: () {
-      //           String location = 'Costa Da Caparica';
-      //           Navigator.push(
-      //             context,
-      //             MaterialPageRoute(
-      //                 builder: (context) => WeatherPage(location: location)),
-      //           );
-      //         },
-      //       ),
-      //       ListTile(
-      //         title: Text('Menu'),
-      //         onTap: () {
-      //           Navigator.push(context,
-      //               MaterialPageRoute(builder: (context) => MenuPage()));
-      //           // Handle option 1
-      //         },
-      //       ),
-      //       ListTile(
-      //         title: Text('Events'),
-      //         onTap: () {
-      //           Navigator.push(context,
-      //               MaterialPageRoute(builder: (context) => EventsPage()));
-      //           // Handle option 1
-      //         },
-      //       ),
-      //       ListTile(
-      //         title: Text('Notifications'),
-      //         trailing: Checkbox(
-      //           value: notificationsEnabled,
-      //           onChanged: (value) {
-      //             setState(() {
-      //               notificationsEnabled = value!;
-      //             });
-      //           },
-      //         ),
-      //       ),
-      //       ListTile(
-      //         title: Text('Choose a university'),
-      //         onTap: () {
-      //           // Navigate to the university choice screen
-      //           Navigator.pushReplacement(
-      //             context,
-      //             MaterialPageRoute(builder: (context) => UniversityChoice()),
-      //           );
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.blueAccent,
-      //   onPressed: () {
-      //     test();
-      //   },
-      //   child: const Icon(
-      //     Icons.route,
-      //     color: Colors.white,
-      //   ),
-      // ),
     );
   }
 
