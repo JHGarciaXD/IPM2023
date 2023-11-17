@@ -159,7 +159,6 @@ class MyHomePageState extends State<MyHomePage> {
   Widget MapPage(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-
       body: Stack(
         children: [
           FlutterMap(

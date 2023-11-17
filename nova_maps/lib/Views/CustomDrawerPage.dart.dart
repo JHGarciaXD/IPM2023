@@ -178,7 +178,7 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
         title = "NOVA Maps";
         return UniversityChoice();
       case DrawerItems.weather:
-        title = "NOVA Maps";
+        title = "Weather";
         return WeatherPage(location: LOCATION, openDrawer: openDrawer);
       default:
         return MyHomePage(openDrawer: openDrawer);
