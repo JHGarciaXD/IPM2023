@@ -58,6 +58,7 @@ class EventsPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    /*
                     ClipRRect(
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(8.0),
@@ -69,6 +70,7 @@ class EventsPage extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
+                     */
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Column(
@@ -148,14 +150,15 @@ class EventDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
+            /*Image.network(
               event.imageUrl,
               height: 200.0,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
             SizedBox(height: 16.0),
-            Text(
+
+            */Text(
               'Date: ${event.date}',
               style: TextStyle(fontSize: 16.0),
             ),

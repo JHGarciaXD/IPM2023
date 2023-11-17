@@ -30,92 +30,92 @@ var pointsOfInterest = [
   PointOfInterest(
       coordinates: LatLng(38.66162, -9.20681),
       name: "Tanto Faz Academic Bar",
-      type: "restaurant",
+      type: "Restaurant",
       description: "..."),
   PointOfInterest(
       coordinates: LatLng(38.66176, -9.20481),
-      name: "Cantine",
-      type: "restaurant",
+      name: "Canteen",
+      type: "Restaurant",
       description: "..."),
   PointOfInterest(
       coordinates: LatLng(38.66016, -9.20545),
       name: "My Spot Bar",
-      type: "restaurant",
+      type: "Restaurant",
       description: "..."),
   PointOfInterest(
       coordinates: LatLng(38.66264, -9.20518),
       name: "C@mpus Bar",
-      type: "restaurant",
+      type: "Restaurant",
       description: "..."),
   PointOfInterest(
       coordinates: LatLng(38.66199, -9.20787),
       name: "Nova Alquimia Restaurant",
-      type: "restaurant",
+      type: "Restaurant",
       description: "..."),
   PointOfInterest(
       coordinates: LatLng(38.65850, -9.20462),
       name: "Sport Bar",
-      type: "restaurant",
+      type: "Restaurant",
       description: "..."),
   PointOfInterest(
       coordinates: LatLng(38.66177, -9.20546),
       name: "Casa do Pessoal",
-      type: "restaurant",
+      type: "Restaurant",
       description: "..."),
   PointOfInterest(
       coordinates: const LatLng(38.66128, -9.20569),
       name: "Building 1",
-      type: "building",
+      type: "Building",
       description: "Physics Department."),
   PointOfInterest(
       coordinates: const LatLng(38.66115, -9.20345),
       name: "Building 2",
-      type: "building",
+      type: "Building",
       description: "This is the compsci building."),
   PointOfInterest(
       coordinates: const LatLng(38.663296, -9.207253),
       name: "Building 3",
-      type: "building",
+      type: "Building",
       description: "IT Infrastructures division."),
   PointOfInterest(
       coordinates: const LatLng(38.66289, -9.20721),
       name: "Building 4",
-      type: "building",
+      type: "Building",
       description: "Fablab."),
   PointOfInterest(
       coordinates: const LatLng(38.66342, -9.20686),
       name: "Building 5",
-      type: "building",
+      type: "Building",
       description: "Caixa Geral de Depósitos Auditorium."),
   PointOfInterest(
       coordinates: const LatLng(38.66234, -9.20778),
       name: "Minotaur's Building",
-      type: "building",
+      type: "Building",
       description: "Chemistry & Bio Chemistry Department."),
   PointOfInterest(
       coordinates: const LatLng(38.66085, -9.20575),
       name: "Building 7",
-      type: "building",
+      type: "Building",
       description: "This is the math building."),
   PointOfInterest(
       coordinates: const LatLng(38.66048, -9.20662),
       name: "Building 8",
-      type: "building",
+      type: "Building",
       description: "Mechanical Engineering Department."),
   PointOfInterest(
       coordinates: const LatLng(38.66021, -9.20713),
       name: "Building 9",
-      type: "building",
+      type: "Building",
       description: "Civil Engineering building."),
   PointOfInterest(
       coordinates: const LatLng(38.66067, -9.20489),
       name: "Building 10",
-      type: "building",
+      type: "Building",
       description: "Electrical Engineering Department."),
   PointOfInterest(
       coordinates: const LatLng(38.66293, -9.20659),
       name: "Building 11",
-      type: "building",
+      type: "Building",
       description: "E-Learning Labs.")
 ];
 

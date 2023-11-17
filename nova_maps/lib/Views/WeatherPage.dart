@@ -82,7 +82,7 @@ class _WeatherPageState extends State<WeatherPage> {
 
               // Wind and Humidity
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(10.0),
@@ -90,7 +90,7 @@ class _WeatherPageState extends State<WeatherPage> {
                 child: Text(
                   'Wind: ${_weather?.windSpeed} m/s    Humidity: ${_weather?.humidity}%',
                   style: TextStyle(
-                    fontSize: 22.0,
+                    fontSize: 18.0,
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                   ),
@@ -100,7 +100,7 @@ class _WeatherPageState extends State<WeatherPage> {
               // Forecast for the Next Day
               SizedBox(height: 10.0),
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(4.0),
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(10.0),

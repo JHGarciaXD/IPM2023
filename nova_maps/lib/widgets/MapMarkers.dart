@@ -24,19 +24,19 @@ var pointsOfInterest = [
   PointOfInterest(
       coordinates: const LatLng(38.66115, -9.20345),
       name: "Building 2",
-      type: "building",
+      type: "Building",
       description: "This is the compsci building."
   ),
   PointOfInterest(
       coordinates: const LatLng(38.66175, -9.20465),
       name: "Cafeteria",
-      type: "restaurant",
+      type: "Restaurant",
       description: "This is the cafeteria."
   ),
   PointOfInterest(
       coordinates: const LatLng(38.66085, -9.20575),
       name: "Building 7",
-      type: "building",
+      type: "Building",
       description: "This is the math building."
   )
 ];
@@ -48,7 +48,7 @@ Marker pointOfInterestMarker(
 ) {
   var color = Colors.blue.shade400;
   var icon = Icons.business;
-  if(point.type == "restaurant"){
+  if(point.type == "Restaurant"){
     color = Colors.yellow.shade700;
     icon = Icons.restaurant;
   }
