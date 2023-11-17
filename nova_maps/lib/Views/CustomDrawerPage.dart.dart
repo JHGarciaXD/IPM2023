@@ -67,16 +67,22 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
       color: Colors.grey,
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              if (yOffset == 0)
-                openDrawer();
-              else
-                closeDrawer();
-            },
-          ),
-          title: Text(title), // Replace with your title
+          leading: item != DrawerItems.university
+              ? IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    if (yOffset == 0)
+                      openDrawer();
+                    else
+                      closeDrawer();
+                  },
+                )
+              : null,
+          title: item != DrawerItems.university
+              ? Text(title)
+              : Center(
+                  child: Text(title),
+                ), // Replace with your title
           actions: [
             if (item == DrawerItems.home || item == DrawerItems.notifications)
               PopupMenuButton<String>(
@@ -125,7 +131,7 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
   }
 
   void openDrawer() => setState(() {
-        yOffset = (48.00*(DrawerItems.all.length));
+        yOffset = (56.00 * (DrawerItems.all.length));
       });
 
   void closeDrawer() => setState(() {
@@ -138,6 +144,7 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
           onSelectedItem: (item) {
             setState(() {
               this.item = item;
+              updateTitle(item);
             });
             closeDrawer();
           },
@@ -158,6 +165,29 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
     );
   }
 
+  void updateTitle(DrawerItem item) {
+    switch (item) {
+      case DrawerItems.events:
+        title = "Events";
+        break;
+      case DrawerItems.home:
+        title = "NOVA Maps";
+        break;
+      case DrawerItems.menu:
+        title = "Menu";
+        break;
+      case DrawerItems.university:
+        title = "Choose your College";
+        break;
+      case DrawerItems.weather:
+        title = "Weather";
+        break;
+      // Add cases for other items...
+      default:
+        title = "NOVA Maps";
+    }
+  }
+
   Widget getDrawerPage() {
     switch (item) {
       case DrawerItems.events:
@@ -166,19 +196,14 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
           return EventsPage(openDrawer: openDrawer);
         }
       case DrawerItems.home:
-        title = "NOVA Maps";
         return MyHomePage(openDrawer: openDrawer);
       case DrawerItems.menu:
-        title = "Menu";
         return MenuPage(openDrawer: openDrawer);
       case DrawerItems.notifications:
-        title = "Notifications";
         return MyHomePage(openDrawer: openDrawer);
       case DrawerItems.university:
-        title = "NOVA Maps";
         return UniversityChoice();
       case DrawerItems.weather:
-        title = "Weather";
         return WeatherPage(location: LOCATION, openDrawer: openDrawer);
       default:
         return MyHomePage(openDrawer: openDrawer);

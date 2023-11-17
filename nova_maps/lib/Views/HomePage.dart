@@ -63,50 +63,50 @@ var pointsOfInterest = [
       type: "restaurant",
       description: "..."),
   PointOfInterest(
-    coordinates: const LatLng(38.66128, -9.20569),
-    name: "Building 1",
-    type: "building",
-    description: "Physics Department."),
+      coordinates: const LatLng(38.66128, -9.20569),
+      name: "Building 1",
+      type: "building",
+      description: "Physics Department."),
   PointOfInterest(
       coordinates: const LatLng(38.66115, -9.20345),
       name: "Building 2",
       type: "building",
       description: "This is the compsci building."),
   PointOfInterest(
-    coordinates: const LatLng(38.663296, -9.207253),
-    name: "Building 3",
-    type: "building",
-    description: "IT Infrastructures division."),
+      coordinates: const LatLng(38.663296, -9.207253),
+      name: "Building 3",
+      type: "building",
+      description: "IT Infrastructures division."),
   PointOfInterest(
-    coordinates: const LatLng(38.66289, -9.20721),
-    name: "Building 4",
-    type: "building",
-    description: "Fablab."),
+      coordinates: const LatLng(38.66289, -9.20721),
+      name: "Building 4",
+      type: "building",
+      description: "Fablab."),
   PointOfInterest(
-    coordinates: const LatLng(38.66342, -9.20686),
-    name: "Building 5",
-    type: "building",
-    description: "Caixa Geral de Depósitos Auditorium."),
+      coordinates: const LatLng(38.66342, -9.20686),
+      name: "Building 5",
+      type: "building",
+      description: "Caixa Geral de Depósitos Auditorium."),
   PointOfInterest(
-    coordinates: const LatLng(38.66234, -9.20778),
-    name: "Minotaur's Building",
-    type: "building",
-    description: "Chemistry & Bio Chemistry Department."),
+      coordinates: const LatLng(38.66234, -9.20778),
+      name: "Minotaur's Building",
+      type: "building",
+      description: "Chemistry & Bio Chemistry Department."),
   PointOfInterest(
       coordinates: const LatLng(38.66085, -9.20575),
       name: "Building 7",
       type: "building",
       description: "This is the math building."),
   PointOfInterest(
-    coordinates: const LatLng(38.66048, -9.20662),
-    name: "Building 8",
-    type: "building",
-    description: "Mechanical Engineering Department."),
+      coordinates: const LatLng(38.66048, -9.20662),
+      name: "Building 8",
+      type: "building",
+      description: "Mechanical Engineering Department."),
   PointOfInterest(
-    coordinates: const LatLng(38.66021, -9.20713),
-    name: "Building 9",
-    type: "building",
-    description: "Civil Engineering building."),
+      coordinates: const LatLng(38.66021, -9.20713),
+      name: "Building 9",
+      type: "building",
+      description: "Civil Engineering building."),
   PointOfInterest(
       coordinates: const LatLng(38.66067, -9.20489),
       name: "Building 10",
@@ -126,23 +126,35 @@ class MyHomePageState extends State<MyHomePage> {
   OverlayEntry? overlayEntry;
   PointOfInterest? selectedPoint;
   List<LatLng> navigationPoints = [];
+  TextEditingController searchController = TextEditingController();
+  List<PointOfInterest> filteredList = [];
 
   @override
   void initState() {
     super.initState();
     initializeFilters();
+    searchController.addListener(_onSearchChanged);
     searchFocusNode.addListener(() {
       if (searchFocusNode.hasFocus) {
-        showOverlay(context);
+        showOverlay(context, filteredList);
       } else {
         removeOverlay();
       }
     });
   }
 
+  void _onSearchChanged() {
+    if (searchController.text.isNotEmpty) {
+      _filterSearchResults(searchController.text);
+    } else {
+      removeOverlay();
+    }
+  }
+
   @override
   void dispose() {
     searchFocusNode.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
@@ -172,31 +184,24 @@ class MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void showOverlay(BuildContext context) {
+  void showOverlay(BuildContext context, List<PointOfInterest> filteredList) {
     OverlayState? overlayState = Overlay.of(context);
-    double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        top: keyboardHeight > 0
-            ? 60
-            : MediaQuery.of(context).size.height -
-                320, // Adjust based on your UI
-        left: 40,
-        right: 40,
+        // ... positioning code ...
         child: Material(
           elevation: 4.0,
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              ListTile(
-                  title: Text('Option 1'),
-                  onTap: () => selectOption('Option 1')),
-              ListTile(
-                  title: Text('Option 2'),
-                  onTap: () => selectOption('Option 2')),
-              // Add more options here
-            ],
+          child: ListView.builder(
+            itemCount: filteredList.length,
+            itemBuilder: (context, index) {
+              var point = filteredList[index];
+              return ListTile(
+                title: Text(point.name),
+                onTap: () => selectOption(point.name),
+                // ... other list tile properties ...
+              );
+            },
           ),
         ),
       ),
@@ -293,6 +298,7 @@ class MyHomePageState extends State<MyHomePage> {
                   ),
                   Expanded(
                     child: TextField(
+                      controller: searchController,
                       cursorColor: const Color.fromARGB(255, 255, 255, 255),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.go,
@@ -351,6 +357,23 @@ class MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+
+  void _filterSearchResults(String query) {
+    List<PointOfInterest> dummyListData = pointsOfInterest.where((item) {
+      return item.name.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+
+    if (query.isNotEmpty) {
+      showOverlay(context, dummyListData);
+      setState(() {
+        filteredPointsOfInterest = dummyListData;
+      });
+    } else {
+      setState(() {
+        filteredPointsOfInterest = pointsOfInterest;
+      });
+    }
   }
 
   void _showFilterOptions(BuildContext context) {

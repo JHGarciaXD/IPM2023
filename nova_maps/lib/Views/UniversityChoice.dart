@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nova_maps/Views/CustomDrawerPage.dart.dart';
 import 'package:nova_maps/Views/HomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 const double SPACING = 30;
 
 class UniversityChoice extends StatelessWidget {
@@ -14,20 +15,6 @@ class UniversityChoice extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              padding: EdgeInsets.all(16.0),
-              color: Colors.lightBlue[700],
-              child: Center(
-                child: Text(
-                  'CHOOSE YOUR UNIVERSITY',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
             SizedBox(height: 24.0),
             Expanded(
               child: Center(
@@ -91,7 +78,6 @@ class UniversityChoice extends StatelessWidget {
     );
   }
 }
-
 
 Future<void> updateFirstTime() async {
   final prefs = await SharedPreferences.getInstance();
