@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:nova_maps/Views/CustomDrawerPage.dart.dart';
 import 'package:nova_maps/Views/WeatherPageSecundary.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,6 +14,7 @@ import '../model/DrawerItem.dart';
 import '../widgets/DrawerWidget.dart';
 import 'EventsPage.dart';
 import 'MenuPage.dart';
+import 'NavigationPage.dart';
 import 'WeatherPage.dart';
 import 'WeatherBox.dart';
 
@@ -129,6 +131,8 @@ class MyHomePageState extends State<MyHomePage> {
   TextEditingController searchController = TextEditingController();
   List<PointOfInterest> filteredList = [];
 
+  List<PointOfInterest> filteredPointsOfInterest = List.from(pointsOfInterest);
+  List<PointOfInterest> searchFilteredList = List.from(pointsOfInterest);
   @override
   void initState() {
     super.initState();
@@ -136,11 +140,40 @@ class MyHomePageState extends State<MyHomePage> {
     searchController.addListener(_onSearchChanged);
     searchFocusNode.addListener(() {
       if (searchFocusNode.hasFocus) {
-        showOverlay(context, filteredList);
+        showSearchBottomSheet(context);
       } else {
         removeOverlay();
       }
     });
+  }
+
+  void showSearchBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Column(
+          children: <Widget>[
+            TextField(
+              onChanged: (value) {
+                // Update your search results based on the input
+              },
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredPointsOfInterest.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final point = filteredPointsOfInterest[index];
+                  return ListTile(
+                    title: Text(point.name),
+                    // Handle selection
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _onSearchChanged() {
@@ -188,37 +221,61 @@ class MyHomePageState extends State<MyHomePage> {
     OverlayState? overlayState = Overlay.of(context);
 
     overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        // ... positioning code ...
-        child: Material(
-          elevation: 4.0,
-          child: ListView.builder(
-            itemCount: filteredList.length,
-            itemBuilder: (context, index) {
-              var point = filteredList[index];
-              return ListTile(
-                title: Text(point.name),
-                onTap: () => selectOption(point.name),
-                // ... other list tile properties ...
-              );
-            },
+      builder: (context) => Positioned.fill(
+        child: GestureDetector(
+          onTap: () {
+            print("Overlay tapped - removing overlay");
+            removeOverlay();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CustomDrawerPage(),
+              ),
+            );
+          },
+          behavior: HitTestBehavior.translucent,
+          child: Container(
+            color: Colors.transparent,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Card(
+                elevation: 8.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                margin: EdgeInsets.all(10),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: ListView.builder(
+                    itemCount: filteredList.length,
+                    itemBuilder: (context, index) {
+                      var point = filteredList[index];
+                      return ListTile(
+                        title: Text(point.name),
+                        onTap: () {
+                          print("List item tapped - removing overlay");
+                          removeOverlay();
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
     );
+
+    print("Inserting overlay");
     overlayState?.insert(overlayEntry!);
   }
 
   void removeOverlay() {
-    overlayEntry?.remove();
-    overlayEntry = null;
-  }
-
-  void selectOption(String option) {
-    // Handle the selection
-    removeOverlay();
-    // You can also set the selected option to the search bar if needed
-    // searchController.text = option;
+    if (overlayEntry != null) {
+      overlayEntry!.remove();
+      overlayEntry = null;
+      setState(() {}); // Refresh the UI
+    }
   }
 
   @override
@@ -280,13 +337,11 @@ class MyHomePageState extends State<MyHomePage> {
           ),
           if (navigationPoints.isNotEmpty)
             Positioned(
-              bottom: 100,
-              right: 0,
-              height:90,
-              width: 90,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
+                bottom: 100,
+                right: 0,
+                height: 90,
+                width: 90,
+                child: Stack(alignment: Alignment.center, children: [
                   IconButton(
                     iconSize: 70,
                     icon: const Icon(Icons.circle),
@@ -309,9 +364,7 @@ class MyHomePageState extends State<MyHomePage> {
                       });
                     },
                   ),
-                ]
-              )
-            ),
+                ])),
           Positioned(
             bottom: 40,
             right: 15,
@@ -331,17 +384,25 @@ class MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                   Expanded(
-                    child: TextField(
-                      controller: searchController,
-                      cursorColor: const Color.fromARGB(255, 255, 255, 255),
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.go,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                          hintText: "Search..."),
-                    ),
-                  ),
+                      child: GestureDetector(
+                    child: Text("Search..."),
+                    onTap: () {
+                      showSearch(
+                          context: context,
+                          delegate: CustomSearchDelegate(pointsOfInterest));
+                    },
+                  )
+                      // TextField(
+                      //   controller: searchController,
+                      //   cursorColor: const Color.fromARGB(255, 255, 255, 255),
+                      //   keyboardType: TextInputType.text,
+                      //   textInputAction: TextInputAction.go,
+                      //   decoration: InputDecoration(
+                      //       border: InputBorder.none,
+                      //       contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                      //       hintText: "Search..."),
+                      // ),
+                      ),
                   IconButton(
                     splashColor: Colors.grey,
                     icon: Icon(Icons.list),
@@ -399,7 +460,7 @@ class MyHomePageState extends State<MyHomePage> {
     }).toList();
 
     if (query.isNotEmpty) {
-      showOverlay(context, dummyListData);
+      showSearchBottomSheet(context);
       setState(() {
         filteredPointsOfInterest = dummyListData;
       });
@@ -436,8 +497,6 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<PointOfInterest> filteredPointsOfInterest = List.from(pointsOfInterest);
-
   void _applyFilters() {
     setState(() {
       filteredPointsOfInterest = pointsOfInterest.where((point) {
@@ -454,7 +513,7 @@ class MyHomePageState extends State<MyHomePage> {
           child: ListView.builder(
             itemCount: filteredPointsOfInterest.length,
             itemBuilder: (BuildContext context, int index) {
-              final point = filteredPointsOfInterest[index];
+              final point = searchFilteredList[index];
               return ListTile(
                 leading: Icon(Icons.place), // You can change this icon
                 title: Text(point.name),
@@ -467,6 +526,88 @@ class MyHomePageState extends State<MyHomePage> {
               );
             },
           ),
+        );
+      },
+    );
+  }
+}
+
+class CustomSearchDelegate extends SearchDelegate {
+  // Your data list
+  final List<PointOfInterest> pointsOfInterest;
+
+  CustomSearchDelegate(this.pointsOfInterest);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // Filter the list based on the query
+    var filteredList = pointsOfInterest.where((poi) {
+      return poi.name.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+
+    return ListView.builder(
+      itemCount: filteredList.length,
+      itemBuilder: (context, index) {
+        var point = filteredList[index];
+        return ListTile(
+          title: Text(point.name),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NavigationPage(point)),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // Filter the list for suggestions based on the query
+    var suggestionsList = query.isEmpty
+        ? []
+        : pointsOfInterest.where((poi) {
+            return poi.name.toLowerCase().contains(query.toLowerCase());
+          }).toList();
+
+    return ListView.builder(
+      itemCount: suggestionsList.length,
+      itemBuilder: (context, index) {
+        var point = suggestionsList[index];
+        var suggestion = suggestionsList[index];
+        return ListTile(
+          title: Text(suggestion.name),
+          onTap: () {
+            close(context, null);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NavigationPage(point)),
+            );
+            // Update the query and show results when the user taps a suggestion
+          },
         );
       },
     );
