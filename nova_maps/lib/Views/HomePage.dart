@@ -278,6 +278,40 @@ class MyHomePageState extends State<MyHomePage> {
               ]),
             ],
           ),
+          if (navigationPoints.isNotEmpty)
+            Positioned(
+              bottom: 100,
+              right: 0,
+              height:90,
+              width: 90,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  IconButton(
+                    iconSize: 70,
+                    icon: const Icon(Icons.circle),
+                    alignment: Alignment.center,
+                    color: Colors.red.shade300,
+                    onPressed: () {
+                      setState(() {
+                        navigationPoints.clear();
+                      });
+                    },
+                  ),
+                  IconButton(
+                    iconSize: 40,
+                    icon: const Icon(Icons.directions_off_sharp),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        navigationPoints.clear();
+                      });
+                    },
+                  ),
+                ]
+              )
+            ),
           Positioned(
             bottom: 40,
             right: 15,

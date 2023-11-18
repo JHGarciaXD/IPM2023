@@ -20,27 +20,6 @@ class PointOfInterest {
   });
 }
 
-var pointsOfInterest = [
-  PointOfInterest(
-      coordinates: const LatLng(38.66115, -9.20345),
-      name: "Building 2",
-      type: "Building",
-      description: "This is the compsci building."
-  ),
-  PointOfInterest(
-      coordinates: const LatLng(38.66175, -9.20465),
-      name: "Cafeteria",
-      type: "Restaurant",
-      description: "This is the cafeteria."
-  ),
-  PointOfInterest(
-      coordinates: const LatLng(38.66085, -9.20575),
-      name: "Building 7",
-      type: "Building",
-      description: "This is the math building."
-  )
-];
-
 Marker pointOfInterestMarker(
     PointOfInterest point,
     BuildContext context,
