@@ -130,6 +130,7 @@ class MyHomePageState extends State<MyHomePage> {
   List<LatLng> navigationPoints = [];
   TextEditingController searchController = TextEditingController();
   List<PointOfInterest> filteredList = [];
+  MapController mapController = MapController();
 
   List<PointOfInterest> filteredPointsOfInterest = List.from(pointsOfInterest);
   List<PointOfInterest> searchFilteredList = List.from(pointsOfInterest);
@@ -299,6 +300,7 @@ class MyHomePageState extends State<MyHomePage> {
       body: Stack(
         children: [
           FlutterMap(
+            mapController: mapController,
             options: const MapOptions(
               initialCenter: LatLng(38.66168, -9.20592),
               initialZoom: 17,
@@ -389,7 +391,7 @@ class MyHomePageState extends State<MyHomePage> {
                     onTap: () {
                       showSearch(
                           context: context,
-                          delegate: CustomSearchDelegate(pointsOfInterest));
+                          delegate: CustomSearchDelegate(this, pointsOfInterest));
                     },
                   )
                       // TextField(
@@ -520,6 +522,7 @@ class MyHomePageState extends State<MyHomePage> {
                 subtitle: Text(point.type),
                 onTap: () => {
                   // Handle the selection
+                  mapController.move(point.coordinates, 17),
                   selectPoint(point),
                   Navigator.of(context).pop(),
                 },
@@ -534,9 +537,10 @@ class MyHomePageState extends State<MyHomePage> {
 
 class CustomSearchDelegate extends SearchDelegate {
   // Your data list
+  final MyHomePageState homePage;
   final List<PointOfInterest> pointsOfInterest;
 
-  CustomSearchDelegate(this.pointsOfInterest);
+  CustomSearchDelegate(this.homePage, this.pointsOfInterest);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -574,10 +578,9 @@ class CustomSearchDelegate extends SearchDelegate {
         return ListTile(
           title: Text(point.name),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NavigationPage(point)),
-            );
+            close(context, null);
+            homePage.mapController.move(point.coordinates, 17);
+            homePage.selectPoint(point);
           },
         );
       },
@@ -602,10 +605,8 @@ class CustomSearchDelegate extends SearchDelegate {
           title: Text(suggestion.name),
           onTap: () {
             close(context, null);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NavigationPage(point)),
-            );
+            homePage.mapController.move(point.coordinates, 17);
+            homePage.selectPoint(point);
             // Update the query and show results when the user taps a suggestion
           },
         );
