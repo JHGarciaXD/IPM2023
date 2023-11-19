@@ -118,7 +118,22 @@ var pointsOfInterest = [
       coordinates: const LatLng(38.66293, -9.20659),
       name: "Building 11",
       type: "Building",
-      description: "E-Learning Labs.")
+      description: "E-Learning Labs."),
+  PointOfInterest(
+    coordinates: const LatLng(38.66082,-9.20342),
+    name: "ATM (Building 2)",
+    type: "ATM",
+    description: "This ATM machine is situated in the entrance of Building 2."),
+  PointOfInterest(
+      coordinates: const LatLng(38.6624832, -9.2076045),
+      name: "ATM (Minotaur's Building)",
+      type: "ATM",
+      description: "This ATM machine is situated in the entrance of the Minotaur's Building."),
+  PointOfInterest(
+      coordinates: const LatLng(38.6612083, -9.2056007),
+      name: "ATM (Physics Building)",
+      type: "ATM",
+      description: "This ATM machine is situated in the entrance of the Physics Building.")
 ];
 
 class MyHomePageState extends State<MyHomePage> {

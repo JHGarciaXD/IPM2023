@@ -32,6 +32,10 @@ Marker pointOfInterestMarker(
     color = Colors.yellow.shade700;
     icon = Icons.restaurant;
   }
+  if (point.type == "ATM") {
+    color = Colors.green.shade500;
+    icon = Icons.atm;
+  }
   return _markerButton(point, color, icon, context, homePage);
 }
 
