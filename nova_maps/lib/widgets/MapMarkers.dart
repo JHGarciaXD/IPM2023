@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:nova_maps/Views/MenuPage.dart';
 
 import '../Views/HomePage.dart';
 import '../Views/NavigationPage.dart';
@@ -75,7 +76,7 @@ Marker _markerButton(
 
 Marker selectedPointMenu(PointOfInterest point, MyHomePageState homePage){
   return Marker(
-    width: 190,
+    width: point.type == "Restaurant" ? 250 : 190,
     height: 120,
     point: point.coordinates,
     child: Center(
@@ -95,6 +96,19 @@ Marker selectedPointMenu(PointOfInterest point, MyHomePageState homePage){
                 });
               },
             ),
+            if (point.type == "Restaurant")
+              IconButton(
+                iconSize: 45,
+                icon: const Icon(Icons.fastfood_rounded),
+                alignment: Alignment.topLeft,
+                color: Colors.orange.shade200,
+                onPressed: () {
+                  Navigator.push(
+                    homePage.context,
+                    MaterialPageRoute(builder: (context) => MenuPage2()),
+                  );
+                },
+              ),
             IconButton(
               iconSize: 45,
               icon: const Icon(Icons.info),
