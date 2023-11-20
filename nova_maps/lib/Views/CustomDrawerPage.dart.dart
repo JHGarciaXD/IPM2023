@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nova_maps/Views/HomePage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/DrawerItems.dart';
 import '../model/DrawerItem.dart';
@@ -30,9 +31,34 @@ class NotificationDetails {
 class _CustomDrawerPageState extends State<CustomDrawerPage> {
   double yOffset = 0;
   double scaleFactor = 1;
-  DrawerItem item = DrawerItems.home;
+  late DrawerItem item;
   String title = "NOVA Maps";
   bool? notificationsEnabled = true;
+  late bool firstTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+  void _loadPreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    firstTime = prefs.getBool('IsFirstTime') ?? true;
+    // Example: Reading a boolean value
+    notificationsEnabled = prefs.getBool('notificationsEnabled') ?? true;
+
+    checkItem();
+    setState(() {});
+  }
+
+  void checkItem() {
+    if (firstTime) {
+      item = DrawerItems.university;
+    } else {
+      item = DrawerItems.home;
+    }
+  }
 
   // Add any other necessary variables and enums
 
@@ -64,7 +90,6 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey,
       child: Scaffold(
         appBar: AppBar(
           leading: item != DrawerItems.university
@@ -131,7 +156,7 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
   }
 
   void openDrawer() => setState(() {
-        yOffset = (48.00 * (DrawerItems.all.length));
+        yOffset = (60.00 * (DrawerItems.all.length));
       });
 
   void closeDrawer() => setState(() {

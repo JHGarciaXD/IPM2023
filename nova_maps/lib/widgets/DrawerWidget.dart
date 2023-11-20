@@ -23,25 +23,26 @@ class DrawerWidget extends StatelessWidget {
       );
 
   Widget buildDrawerItems(BuildContext context) => Container(
-    color: Colors.lightBlue, // Set the background color here
-    child: Column(
-      children: DrawerItems.all
-          .map((item) => ListTile(
-        title: Text(item.title),
-        leading: Icon(item.icon),
-        trailing: item.hasRadioButton
-            ? Radio(
-          value: null, // Provide the appropriate value
-          groupValue: null, // Provide the appropriate group value
-          onChanged: null, // Provide the appropriate onChanged callback
-        )
-            : null,
-        onTap: () {
-          onSelectedItem(item);
-        },
-      ))
-          .toList(),
-    ),
-  );
-
+        // Set the background color here
+        child: Column(
+          children: DrawerItems.all
+              .map((item) => ListTile(
+                    title: Text(item.title),
+                    leading: Icon(item.icon),
+                    trailing: item.hasRadioButton
+                        ? Radio(
+                            value: null, // Provide the appropriate value
+                            groupValue:
+                                null, // Provide the appropriate group value
+                            onChanged:
+                                null, // Provide the appropriate onChanged callback
+                          )
+                        : null,
+                    onTap: () {
+                      onSelectedItem(item);
+                    },
+                  ))
+              .toList(),
+        ),
+      );
 }

@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: darkTheme,
       darkTheme: darkTheme,
       themeMode: _themeManager.themeMode,
-      home: isFirstTime ? UniversityChoice() : CustomDrawerPage(),
+      home: CustomDrawerPage(),
     );
   }
 }
