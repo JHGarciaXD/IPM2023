@@ -22,63 +22,57 @@ class PointOfInterest {
 }
 
 Marker pointOfInterestMarker(
-    PointOfInterest point,
-    BuildContext context,
-    MyHomePageState homePage
-) {
-  var color = Colors.blue.shade400;
+    PointOfInterest point, BuildContext context, MyHomePageState homePage) {
+  var color = const Color.fromARGB(255, 112, 173, 223);
   var icon = Icons.business;
-  if(point.type == "Restaurant"){
-    color = Colors.yellow.shade700;
+  if (point.type == "Restaurant") {
+    color = const Color.fromARGB(255, 236, 207, 134);
     icon = Icons.restaurant;
   }
   if (point.type == "ATM") {
-    color = Colors.green.shade500;
+    color = const Color.fromARGB(255, 120, 177, 122);
     icon = Icons.atm;
   }
   return _markerButton(point, color, icon, context, homePage);
 }
 
-Marker _markerButton(
-    PointOfInterest point,
-    Color color,
-    IconData icon,
-    BuildContext context,
-    MyHomePageState homePage
-) {
+Marker _markerButton(PointOfInterest point, Color color, IconData icon,
+    BuildContext context, MyHomePageState homePage) {
   return Marker(
       point: point.coordinates,
       width: 100,
       height: 100,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          IconButton(
-            iconSize: 60,
-            icon: const Icon(Icons.location_pin),
-            color: color,
-            onPressed: () {homePage.selectPoint(point);},
-          ),
-          IconButton(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-            iconSize: 20,
-            icon: const Icon(Icons.circle),
-            color: color,
-            onPressed: () {homePage.selectPoint(point);},
-          ),
-          IconButton(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
-            iconSize: 22,
-            icon: Icon(icon),
-            color: Colors.black,
-            onPressed: () {homePage.selectPoint(point);},
-          ),
-        ]
-      )
-  );
+      child: Stack(alignment: Alignment.center, children: [
+        IconButton(
+          iconSize: 60,
+          icon: const Icon(Icons.location_pin),
+          color: color,
+          onPressed: () {
+            homePage.selectPoint(point);
+          },
+        ),
+        IconButton(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+          iconSize: 20,
+          icon: const Icon(Icons.circle),
+          color: color,
+          onPressed: () {
+            homePage.selectPoint(point);
+          },
+        ),
+        IconButton(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
+          iconSize: 22,
+          icon: Icon(icon),
+          color: Colors.black,
+          onPressed: () {
+            homePage.selectPoint(point);
+          },
+        ),
+      ]));
 }
 
-Marker selectedPointMenu(PointOfInterest point, MyHomePageState homePage){
+Marker selectedPointMenu(PointOfInterest point, MyHomePageState homePage) {
   return Marker(
     width: point.type == "Restaurant" ? 250 : 190,
     height: 120,
@@ -87,13 +81,11 @@ Marker selectedPointMenu(PointOfInterest point, MyHomePageState homePage){
       child: GestureDetector(
         child: Container(
           color: Colors.grey.shade800.withOpacity(.90),
-          child: Row(
-              children: [
+          child: Row(children: [
             IconButton(
               iconSize: 45,
               icon: const Icon(Icons.arrow_circle_left_rounded),
               alignment: Alignment.topLeft,
-              color: Colors.yellow.shade200,
               onPressed: () {
                 homePage.setState(() {
                   homePage.selectedPoint = null;
@@ -105,7 +97,6 @@ Marker selectedPointMenu(PointOfInterest point, MyHomePageState homePage){
                 iconSize: 45,
                 icon: const Icon(Icons.fastfood_rounded),
                 alignment: Alignment.topLeft,
-                color: Colors.orange.shade200,
                 onPressed: () {
                   Navigator.push(
                     homePage.context,
@@ -116,35 +107,28 @@ Marker selectedPointMenu(PointOfInterest point, MyHomePageState homePage){
             IconButton(
               iconSize: 45,
               icon: const Icon(Icons.info),
-              color: Colors.blue.shade200,
               onPressed: () {
-                pushNavigationPage(
-                    homePage.selectedPoint!,
-                    homePage.context
-                );
+                pushNavigationPage(homePage.selectedPoint!, homePage.context);
               },
             ),
             IconButton(
               iconSize: 45,
               icon: const Icon(Icons.assistant_direction_sharp),
-              color: Colors.green.shade200,
               onPressed: () {
-                getPoints(homePage.selectedPoint?.coordinates).then((value) =>
-                {
-                  homePage.setState(() {
-                    homePage.navigationPoints = value;
-                    homePage.selectedPoint = null;
-                  })
-                });
+                getPoints(homePage.selectedPoint?.coordinates).then((value) => {
+                      homePage.setState(() {
+                        homePage.navigationPoints = value;
+                        homePage.selectedPoint = null;
+                      })
+                    });
                 // Action upon circle icon press
               },
             ),
-          ]
-              ),
-            ),
-          ),
+          ]),
         ),
-      );
+      ),
+    ),
+  );
 }
 
 void pushNavigationPage(PointOfInterest point, BuildContext context) {

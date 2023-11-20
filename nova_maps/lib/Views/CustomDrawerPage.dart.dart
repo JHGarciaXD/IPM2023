@@ -68,6 +68,11 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
     });
   }
 
+  void _deleteNotificationAndUpdate(String notificationKey) {
+    _deleteNotification(notificationKey);
+    setState(() {}); // This will rebuild the widget with updated notifications
+  }
+
   Map<String, NotificationDetails> notificationDetails = {
     'Notification 1': NotificationDetails(
       title: 'Atenção Obras',
@@ -132,7 +137,7 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
                               icon: Icon(Icons.delete),
                               onPressed: () {
                                 // Handle delete action here
-                                _deleteNotification(choice);
+                                _deleteNotificationAndUpdate(choice);
                               },
                             ),
                           ],
