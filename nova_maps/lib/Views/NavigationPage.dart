@@ -8,8 +8,9 @@ import 'package:nova_maps/widgets/MapMarkers.dart';
 
 class NavigationPage extends StatelessWidget {
   final PointOfInterest point;
+  final String imageUrl;
 
-  const NavigationPage(this.point, {super.key});
+  const NavigationPage(this.point, this.imageUrl, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class NavigationPage extends StatelessWidget {
       body: Column(
           children: [
             Image.network(
-                'https://images.pexels.com/photos/936722/pexels-photo-936722.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                imageUrl
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 30),

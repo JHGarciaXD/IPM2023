@@ -133,8 +133,17 @@ Marker selectedPointMenu(PointOfInterest point, MyHomePageState homePage) {
 }
 
 void pushNavigationPage(PointOfInterest point, BuildContext context) {
+  var imageUrl = "https://images.pexels.com/photos/936722/pexels-photo-936722.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
+  switch (point.name) {
+    case "Tanto Faz Academic Bar":
+      imageUrl = "https://10619-2.s.cdn12.com/rests/original/102_536398321.jpg";
+      break;
+    case "Canteen":
+      imageUrl = "https://github.com/Joao1531/Unova_Flutter/blob/main/Unova/assets/images/cantina.jpeg";
+      break;
+  }
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => NavigationPage(point)),
+    MaterialPageRoute(builder: (context) => NavigationPage(point, imageUrl)),
   );
 }
