@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:nova_maps/Views/MenuPage.dart';
+import 'package:nova_maps/Views/ResraurantPage.dart';
 
 import '../Views/HomePage.dart';
 import '../Views/NavigationPage.dart';
@@ -100,7 +101,7 @@ Marker selectedPointMenu(PointOfInterest point, MyHomePageState homePage) {
                 onPressed: () {
                   Navigator.push(
                     homePage.context,
-                    MaterialPageRoute(builder: (context) => MenuPage2()),
+                    MaterialPageRoute(builder: (context) => RestaurantPage(restaurantName: point.name,)),
                   );
                 },
               ),

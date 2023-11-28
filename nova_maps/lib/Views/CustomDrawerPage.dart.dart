@@ -74,17 +74,17 @@ class _CustomDrawerPageState extends State<CustomDrawerPage> {
   }
 
   Map<String, NotificationDetails> notificationDetails = {
-    'Notification 1': NotificationDetails(
+    'Atenção Obras': NotificationDetails(
       title: 'Atenção Obras',
       explanation: 'Edificio 7 com obras no corredor xpto',
       date: '2023-11-14',
     ),
-    'Notification 2': NotificationDetails(
+    'Parque 7 fechado': NotificationDetails(
       title: 'Parque 7 fechado',
       explanation: 'Até domingo, vão ocorrer limpezas no parque.',
       date: '2023-11-15',
     ),
-    'Notification 3': NotificationDetails(
+    'Cantina fechada': NotificationDetails(
       title: 'Cantina fechada',
       explanation: 'Cantina só abre a partir de dezembro',
       date: '2023-11-16',

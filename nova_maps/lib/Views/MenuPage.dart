@@ -20,7 +20,23 @@ class MenuPage extends StatelessWidget {
 
   MenuPage({required this.openDrawer});
 
-  final List<Restaurant> restaurants = [
+  static List<MenuItem> getMenuForRestaurant(String restaurantName) {
+    for (var restaurant in restaurants) {
+      print("-------------------" + restaurant.name ==
+          restaurantName +
+              "----------------\n" +
+              "-------------" +
+              restaurant.name +
+              "," +
+              restaurantName);
+      if (restaurant.name == restaurantName) {
+        return restaurant.menu;
+      }
+    }
+    return []; // Return an empty list if the restaurant is not found
+  }
+
+  static final List<Restaurant> restaurants = [
     Restaurant(
       name: 'A Tia',
       menu: [
@@ -31,7 +47,7 @@ class MenuPage extends StatelessWidget {
       ],
     ),
     Restaurant(
-      name: 'Cantina',
+      name: 'Canteen',
       menu: [
         MenuItem(category: 'Meals', name: 'Meal 1', price: 10.99),
         MenuItem(category: 'Meals', name: 'Meal 2', price: 12.99),
@@ -49,7 +65,16 @@ class MenuPage extends StatelessWidget {
       ],
     ),
     Restaurant(
-      name: 'MySpot',
+      name: 'C@mpus Bar',
+      menu: [
+        MenuItem(category: 'Meals', name: 'Meal 1', price: 10.99),
+        MenuItem(category: 'Meals', name: 'Meal 2', price: 12.99),
+        MenuItem(category: 'Desserts', name: 'Dessert 1', price: 5.99),
+        MenuItem(category: 'Desserts', name: 'Dessert 2', price: 7.99),
+      ],
+    ),
+    Restaurant(
+      name: 'My Spot Bar',
       menu: [
         MenuItem(category: 'Meals', name: 'Meal 3', price: 15.99),
         MenuItem(category: 'Meals', name: 'Meal 4', price: 17.99),
@@ -58,7 +83,16 @@ class MenuPage extends StatelessWidget {
       ],
     ),
     Restaurant(
-      name: 'TantoFaz',
+      name: 'Tanto Faz Academic Bar',
+      menu: [
+        MenuItem(category: 'Meals', name: 'Meal 1', price: 10.99),
+        MenuItem(category: 'Meals', name: 'Meal 2', price: 12.99),
+        MenuItem(category: 'Desserts', name: 'Dessert 1', price: 5.99),
+        MenuItem(category: 'Desserts', name: 'Dessert 2', price: 7.99),
+      ],
+    ),
+    Restaurant(
+      name: 'Nova Alquimia Restaurant',
       menu: [
         MenuItem(category: 'Meals', name: 'Meal 1', price: 10.99),
         MenuItem(category: 'Meals', name: 'Meal 2', price: 12.99),

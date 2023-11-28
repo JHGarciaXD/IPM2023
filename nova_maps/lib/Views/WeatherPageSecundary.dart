@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'package:weather/weather.dart';
 
@@ -91,10 +92,6 @@ class _WeatherPageSecondState extends State<WeatherPageSecond> {
               // Wind and Humidity
               Container(
                 padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
                 child: Text(
                   'Wind: ${_weather?.windSpeed} m/s    Humidity: ${_weather?.humidity}%',
                   style: TextStyle(
@@ -109,10 +106,6 @@ class _WeatherPageSecondState extends State<WeatherPageSecond> {
               SizedBox(height: 10.0),
               Container(
                 padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
                 child: Text(
                   'Feels Like Temperature:  ${_weather?.tempFeelsLike}',
                   style: TextStyle(
@@ -122,10 +115,30 @@ class _WeatherPageSecondState extends State<WeatherPageSecond> {
                   ),
                 ),
               ),
+              ElevatedButton(
+                onPressed: _launchURL,
+                child: Text('More Weather Info'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue, // Button color
+                  onPrimary: Colors.white, // Text color
+                ),
+              ),
+
+              SizedBox(height: 20),
             ],
           ),
         ),
       ),
     );
+  }
+
+  
+  void _launchURL() async {
+    const url =
+        'https://www.accuweather.com/pt/pt/almada/275589/weather-forecast/275589';
+
+    Uri uri = Uri.parse(url);
+
+    await launchUrl(uri);
   }
 }
