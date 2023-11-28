@@ -139,7 +139,7 @@ void pushNavigationPage(PointOfInterest point, BuildContext context) {
       imageUrl = "https://10619-2.s.cdn12.com/rests/original/102_536398321.jpg";
       break;
     case "Canteen":
-      imageUrl = "https://github.com/Joao1531/Unova_Flutter/blob/main/Unova/assets/images/cantina.jpeg";
+      imageUrl = "https://raw.githubusercontent.com/Joao1531/Unova_Flutter/main/Unova/assets/images/cantina.jpeg?token=GHSAT0AAAAAACKF4Z7TBZPST5JM2ZFNXNDWZLF6WQA";
       break;
   }
   Navigator.push(
